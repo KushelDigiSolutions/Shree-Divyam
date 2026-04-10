@@ -2,10 +2,23 @@
 
 import { useState } from "react";
 
-export default function ProductInfo({ product }) {
-    const [quantity, setQuantity] = useState(1);
-    const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
-    const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+export default function ProductInfo({ 
+    product, 
+    selectedColor: propColor, 
+    setSelectedColor: propSetColor,
+    selectedSize: propSize, 
+    setSelectedSize: propSetSize 
+}) {
+    const [internalQuantity, setQuantity] = useState(1);
+    const [internalSize, setInternalSize] = useState(product.sizes[0]);
+    const [internalColor, setInternalColor] = useState(product.colors[0]);
+
+    const quantity = internalQuantity;
+    const selectedSize = propSize !== undefined ? propSize : internalSize;
+    const setSelectedSize = propSetSize || setInternalSize;
+    
+    const selectedColor = propColor !== undefined ? propColor : internalColor;
+    const setSelectedColor = propSetColor || setInternalColor;
 
     const decrement = () => {
         if (quantity > 1) setQuantity(quantity - 1);
@@ -14,6 +27,17 @@ export default function ProductInfo({ product }) {
     const increment = () => {
         setQuantity(quantity + 1);
     };
+
+    // Find the current active variation from API
+    // If a perfect match isn't found, fallback to matched color or the first variation
+    const activeVariation = product.variations?.find(v => v.color === selectedColor && v.size === selectedSize);
+    const fallbackVariation = product.variations?.find(v => v.color === selectedColor) || product.variations?.[0];
+    const variation = activeVariation || fallbackVariation;
+    
+    // Determine the active price (usually variations provide the exact price via 'extra_price' in this API)
+    const variationPrice = variation ? Number(variation.extra_price) : 0;
+    const currentPrice = variationPrice > 0 ? variationPrice : (product.basePrice || 0);
+    const formattedPrice = product.basePrice ? `${product.currency || '₹'} ${currentPrice}` : product.price;
 
     return (
         <div className="w-full font-gt-walsheim">
@@ -25,7 +49,7 @@ export default function ProductInfo({ product }) {
                 Online Exclusive
             </p>
 
-            <div className="mt-4 text-[28px] font-medium  text-[#2e2a28]">{product.price}</div>
+            <div className="mt-4 text-[28px] font-medium  text-[#2e2a28]">{formattedPrice}</div>
 
             <div className="mt-5 w-full lg:max-w-[350px] text-[15px] sm:text-[16px] font-light font-gt-walsheim leading-relaxed text-[#303030]">
                 {product.fullDescription || product.description}

@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight, ArrowRight, Loader2 } from "lucide-react";
 
 import Link from "next/link";
-import { products } from "../data/products";
+import { products as staticProducts } from "../data/products";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -12,7 +12,30 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 export default function LatestCollection() {
-  const latestProducts = products.filter(p => p.collection === "latest");
+  const [latestProducts, setLatestProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const IMAGE_BASE_URL = "https://shreedivyam.kdscrm.com/uploads/";
+
+  useEffect(() => {
+    const fetchLatestProducts = async () => {
+      try {
+        const response = await fetch("https://shreedivyam.kdscrm.com/api/products");
+        const json = await response.json();
+        if (json && json.success && Array.isArray(json.data)) {
+          // We can just use the latest fetched products (maybe slice or filter if needed, 
+          // here we just use the first 8 or all as the "Latest")
+          setLatestProducts(json.data.slice(0, 10)); // Adjust slice size as needed
+        }
+      } catch (error) {
+        console.error("Error fetching latest products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatestProducts();
+  }, []);
 
   return (
     <section className="mx-auto max-w-[1720px] bg-[#F5F5F7] py-20">
@@ -43,7 +66,7 @@ export default function LatestCollection() {
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="w-full lg:flex-1 min-w-0">
+          <div className="w-full lg:flex-1 min-w-0 flex flex-col">
 
             {/* HEADER */}
             <div className="flex items-center justify-between mb-10">
@@ -62,71 +85,85 @@ export default function LatestCollection() {
               </div>
             </div>
 
-            {/* PRODUCTS CAROUSEL */}
-            <Swiper
-              modules={[Navigation, Autoplay]}
-              navigation={{
-                prevEl: ".swiper-button-prev-custom",
-                nextEl: ".swiper-button-next-custom",
-              }}
-              spaceBetween={55}
-              slidesPerView={1}
-              breakpoints={{
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 2 },
-                1280: { slidesPerView: 2.1 },
-              }}
-              className="w-full h-full pb-10"
-            >
-              {latestProducts.map((product) => (
-                <SwiperSlide key={product.id}>
-                  <div className="bg-white p-1.5 w-full max-w-[330px] h-auto min-h-[500px] shadow-sm hover:shadow-lg transition-all duration-300 mx-auto">
-                    {/* IMAGE */}
-                    <div className="w-full h-[280px] bg-gray-50 overflow-hidden mb-6">
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                      />
-                    </div>
+            {/* CONTENT AREA */}
+            <div className="relative flex-1 min-h-[500px]">
+              {loading ? (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Loader2 className="animate-spin text-[#7A1F3D]" size={40} />
+                </div>
+              ) : (
+                <Swiper
+                  modules={[Navigation, Autoplay]}
+                  navigation={{
+                    prevEl: ".swiper-button-prev-custom",
+                    nextEl: ".swiper-button-next-custom",
+                  }}
+                  spaceBetween={55}
+                  slidesPerView={1}
+                  breakpoints={{
+                    640: { slidesPerView: 2 },
+                    1024: { slidesPerView: 2 },
+                    1280: { slidesPerView: 2.1 },
+                  }}
+                  className="w-full h-full pb-10"
+                >
+                  {latestProducts.map((product) => (
+                    <SwiperSlide key={product.id}>
+                      <div className="bg-white p-1.5 w-full max-w-[330px] h-auto min-h-[500px] shadow-sm hover:shadow-lg transition-all duration-300 mx-auto flex flex-col">
+                        {/* IMAGE */}
+                        <div className="w-full h-[280px] bg-gray-50 overflow-hidden mb-6">
+                          <img
+                            src={`${IMAGE_BASE_URL}${product.image_path}`}
+                            alt={product.name}
+                            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              // Fallback image logic matching ProductGrid
+                              const fallbackProduct = staticProducts.find((p) => p.title.toLowerCase() === product.name.toLowerCase() || p.slug === product.slug);
+                              e.target.src = fallbackProduct ? fallbackProduct.image : staticProducts[product.id % staticProducts.length].image;
+                            }}
+                          />
+                        </div>
 
-                    {/* CONTENT */}
-                    <div className="px-2">
-                      <h4 className="text-[21px] font-gt-walsheim font-medium text-[#303030] mb-2 leading-tight">
-                        {product.title}
-                      </h4>
+                        {/* CONTENT */}
+                        <div className="px-2 flex flex-col flex-1">
+                          <h4 className="text-[21px] font-gt-walsheim font-medium text-[#303030] mb-2 leading-tight line-clamp-1">
+                            {product.name}
+                          </h4>
 
-                      <p className="text-[14px] font-right font-gt-walsheim text-[#303030] mb-2">
-                        {product.description}
-                      </p>
+                          <p className="text-[14px] font-right font-gt-walsheim text-[#303030] mb-2 line-clamp-2">
+                            {product.short_description || "Premium exclusive collection piece."}
+                          </p>
 
-                      <p className="text-[24px] font-bold text-[#7A1F3D] mb-6">
-                        {product.price}
-                      </p>
+                          <p className="text-[24px] font-bold text-[#7A1F3D] mb-6">
+                            {product.currency === "INR" ? "₹" : product.currency}{product.price}
+                          </p>
 
-                      {/* BUTTONS */}
-                      <div className="flex gap-3">
-                        <Link href={`/product-details/${product.slug}`} className="flex-1">
-                          <button className="w-full bg-[#7A1F3D] text-white py-2.5 text-[14px] font-semibold hover:bg-[#5E182F] transition">
-                            Shop Now
-                          </button>
-                        </Link>
+                          {/* BUTTONS */}
+                          <div className="flex gap-3 mt-auto">
+                            <Link href={`/product-details/${product.slug}`} className="flex-1">
+                              <button className="w-full bg-[#7A1F3D] text-white py-2.5 text-[14px] font-semibold hover:bg-[#5E182F] transition">
+                                Shop Now
+                              </button>
+                            </Link>
 
-                        <button className="flex-1 border border-[#7A1F3D] text-[#7A1F3D] py-2.5 text-[14px] font-semibold hover:bg-[#7A1F3D] hover:text-white transition">
-                          Add to Cart
-                        </button>
+                            <button className="flex-1 border border-[#7A1F3D] text-[#7A1F3D] py-2.5 text-[14px] font-semibold hover:bg-[#7A1F3D] hover:text-white transition">
+                              Add to Cart
+                            </button>
+                          </div>
+                        </div>
                       </div>
+                    </SwiperSlide>
+                  ))}
+                  
+                  {latestProducts.length === 0 && !loading && (
+                    <div className="text-center py-10 text-gray-500 w-full flex items-center justify-center">
+                      No products found in the latest collection.
                     </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-
-            {latestProducts.length === 0 && (
-              <div className="text-center py-10 text-gray-500">
-                No products found in the latest collection.
-              </div>
-            )}
+                  )}
+                </Swiper>
+              )}
+            </div>
 
           </div>
         </div>
