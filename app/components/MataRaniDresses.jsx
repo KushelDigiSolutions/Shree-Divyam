@@ -1,16 +1,49 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-
+import React, { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { products } from "../data/products";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
+import { products as staticProducts } from "../data/products";
+
+// Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 
 export default function MataRaniDresses() {
-  const filteredProducts = products.filter(p => p.category === "mata-rani");
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Update this to your actual image storage path
+  const IMAGE_BASE_URL = "https://shreedivyam.kdscrm.com/uploads/";
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("https://shreedivyam.kdscrm.com/api/products/category/mata-rani");
+        const json = await response.json();
+        
+        if (json.products && Array.isArray(json.products)) {
+          setProducts(json.products);
+        }
+      } catch (error) {
+        console.error("Error fetching Mata Rani products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="h-[500px] flex items-center justify-center bg-[#F8F6F3]">
+        <Loader2 className="animate-spin text-[#7A1F3D]" size={40} />
+      </div>
+    );
+  }
 
   return (
     <section className="mx-auto max-w-[1720px] w-full bg-[#F8F6F3] py-12 sm:py-14 md:py-16 lg:py-[54px]">
@@ -41,37 +74,42 @@ export default function MataRaniDresses() {
                 prevEl: ".mr-prev",
                 nextEl: ".mr-next",
               }}
-              spaceBetween={20}
+              spaceBetween={30}
               slidesPerView={1}
               breakpoints={{
                 640: { slidesPerView: 2 },
               }}
               className="w-full"
             >
-              {filteredProducts.map((product) => (
+              {products.map((product) => (
                 <SwiperSlide key={product.id}>
                   <div className="overflow-hidden bg-white ring-1 ring-[#EFEAE4] h-full flex flex-col">
                     <div className="p-[10px] pb-0">
                       <div className="aspect-[1/0.84] w-full h-auto max-h-[340px] overflow-hidden bg-[#F3F3F3]">
                         <img
-                          src={product.image}
-                          alt={product.title}
+                          src={product.image_path?.startsWith('http') ? product.image_path : `${IMAGE_BASE_URL}${product.image_path}`}
+                          alt={product.name}
                           className="h-full w-full object-cover"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            const fallbackProduct = staticProducts.find((p) => p.title.toLowerCase() === product.name.toLowerCase() || p.slug === product.slug);
+                            e.target.src = fallbackProduct ? fallbackProduct.image : staticProducts[product.id % staticProducts.length].image;
+                          }}
                         />
                       </div>
                     </div>
 
                     <div className="px-4 pb-4 pt-3 sm:px-5 sm:pb-5 flex flex-col flex-1">
                       <h3 className="text-[21px] font-medium leading-[1.25]  font-gt-walsheim text-[#303030]">
-                        {product.title}
+                        {product.name}
                       </h3>
 
                       <p className="mt-1.5 text-[14px] leading-[1.45] font-gt-walsheim font-right line-clamp-2 text-[#303030]">
-                        {product.description}
+                        {product.short_description}
                       </p>
 
                       <p className="mt-3 text-[24px] font-bold font-gt-walsheim text-[#7A1F3D]">
-                        {product.price}
+                        {product.currency === "INR" ? "₹" : product.currency}{product.price}
                       </p>
 
                       <div className="mt-auto pt-4 flex flex-col gap-3 min-[480px]:flex-row">
@@ -106,14 +144,16 @@ export default function MataRaniDresses() {
                 Get Premium Dress collection for Radha Krishna
               </h3>
 
-              <button className="mt-5 inline-flex items-center gap-2 bg-white px-5 py-3 text-[15px] font-medium text-[#1F1F1F] transition hover:bg-[#F3F3F3]">
-                View All
-                <ArrowRight size={16} />
-              </button>
+              <Link href="/category/mata-rani">
+                <button className="mt-5 inline-flex items-center gap-2 bg-white px-5 py-3 text-[15px] font-medium text-[#1F1F1F] transition hover:bg-[#F3F3F3]">
+                  View All
+                  <ArrowRight size={16} />
+                </button>
+              </Link>
             </div>
           </div>
         </div>
       </div>
     </section>
   );
-}
+}
