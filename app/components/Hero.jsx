@@ -13,10 +13,16 @@ export default function Hero() {
       />
 
       {/* Main Content */}
-      <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-center px-8 md:px-16 lg:px-24 py-16 md:flex-row md:items-center md:justify-between">
+      <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-center px-8 md:px-16 lg:px-24 py-16 md:flex-row md:items-center md:justify-between relative z-10">
 
         {/* Left Side: Text and CTA */}
-        <div className="w-full md:w-1/2 text-center md:text-left">
+        <div className="w-full md:w-1/2 text-center md:text-left relative z-10">
+
+          {/* Feather Watermark Behind Text */}
+          <div
+            className="absolute top-1/2 left-1/2 md:left-[40%] -translate-x-1/2 -translate-y-1/2 w-[350px] md:w-[450px] lg:w-[550px] h-[350px] md:h-[450px] lg:h-[550px] bg-contain bg-no-repeat bg-center z-[-1] opacity-25 pointer-events-none"
+            style={{ backgroundImage: 'url("https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856924/Where%20Devotion%20Meets%20Royal%20Elegance.png")' }}
+          />
           <h2 className="text-3xl md:text-[41px] font-playfair text-gray-800 leading-tight">
             Where Devotion Meets
           </h2>
