@@ -1,6 +1,9 @@
 import Image from "next/image";
+import { useCurrency } from "../context/CurrencyContext";
 
 export default function ProductCard({ product }) {
+  const { formatPrice } = useCurrency();
+
   return (
     <div className="border border-[#d9cfbf] bg-white p-3">
       <div className="relative aspect-[1.15/1] w-full overflow-hidden">
@@ -20,7 +23,7 @@ export default function ProductCard({ product }) {
         <p className="mt-1 text-[11px] text-[#8c8177]">{product.description}</p>
 
         <p className="mt-2 text-[18px] font-medium text-[#2f2a28]">
-          ₹ {product.price}
+          {formatPrice(product.price, product.usdPrice)}
         </p>
 
         <div className="mt-4 grid grid-cols-2 gap-3">

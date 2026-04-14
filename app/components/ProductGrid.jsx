@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { products as staticProducts } from "../data/products";
+import { useCurrency } from "../context/CurrencyContext";
 
 // Swiper styles
 import "swiper/css";
@@ -14,6 +15,7 @@ import "swiper/css/navigation";
 export default function ProductGrid() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
 
   // Update this to your actual image storage path
   const IMAGE_BASE_URL = "https://shreedivyam.kdscrm.com/uploads/";
@@ -108,7 +110,7 @@ export default function ProductGrid() {
                     {product.short_description}
                   </p>
                   <p className="text-[22px] md:text-[24px] font-bold text-[#7A1F3D] mb-5">
-                    {product.currency === "INR" ? "₹" : product.currency}{product.price}
+                    {formatPrice(product.price, product.usd_price)}
                   </p>
 
                   {/* BUTTONS */}

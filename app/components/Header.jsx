@@ -1,7 +1,8 @@
 "use client";
 
-import { Phone, Search, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
+import { Phone, Search, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useCurrency } from "../context/CurrencyContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,12 +45,15 @@ export default function Header() {
                 <img src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774855916/Mask_group_2_zcgcsh.png" alt="bag" className="h-5 w-auto" />
                 <span>My Bag</span>
               </div>
+
+              {/* 💱 Currency Toggle */}
+              <CurrencyToggle />
             </div>
           </div>
         </div>
       </div>
 
-      {/* ⚪ Main Navbar Wrapper */}
+      {/* Main Navbar Wrapper */}
       <div className="mx-auto max-w-[1720px] bg-white border-b border-gray-100">
         <div className="mx-auto max-w-[1440px] flex flex-col gap-4 px-4 sm:px-8 md:px-16 lg:px-24 py-4 md:flex-row md:items-center md:justify-between">
           <div>
@@ -86,5 +90,37 @@ export default function Header() {
       </div>
 
     </header>
+  );
+}
+
+/* ─── Currency Toggle Component ─── */
+function CurrencyToggle() {
+  const { currency, toggleCurrency } = useCurrency();
+
+  return (
+    <div className="flex items-center rounded-full border border-white/40 overflow-hidden text-[14px] font-semibold">
+      <button
+        id="currency-inr"
+        onClick={() => toggleCurrency("INR")}
+        className={`px-3 py-1 transition-all duration-200 ${
+          currency === "INR"
+            ? "bg-white text-[#7A1F3D]"
+            : "bg-transparent text-white hover:bg-white/10"
+        }`}
+      >
+        INR
+      </button>
+      <button
+        id="currency-usd"
+        onClick={() => toggleCurrency("USD")}
+        className={`px-3 py-1 transition-all duration-200 ${
+          currency === "USD"
+            ? "bg-white text-[#7A1F3D]"
+            : "bg-transparent text-white hover:bg-white/10"
+        }`}
+      >
+        USD
+      </button>
+    </div>
   );
 }

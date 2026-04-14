@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, ArrowRight, Loader2 } from "lucide-react";
 
 import Link from "next/link";
 import { products as staticProducts } from "../data/products";
+import { useCurrency } from "../context/CurrencyContext";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -14,6 +15,7 @@ import "swiper/css/navigation";
 export default function LatestCollection() {
   const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
 
   const IMAGE_BASE_URL = "https://shreedivyam.kdscrm.com/uploads/";
 
@@ -136,7 +138,7 @@ export default function LatestCollection() {
                           </p>
 
                           <p className="text-[24px] font-bold text-[#7A1F3D] mb-6">
-                            {product.currency === "INR" ? "₹" : product.currency}{product.price}
+                            {formatPrice(product.price, product.usd_price)}
                           </p>
 
                           {/* BUTTONS */}

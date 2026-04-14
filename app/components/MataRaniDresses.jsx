@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { products as staticProducts } from "../data/products";
+import { useCurrency } from "../context/CurrencyContext";
 
 // Swiper styles
 import "swiper/css";
@@ -14,6 +15,7 @@ import "swiper/css/navigation";
 export default function MataRaniDresses() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
 
   // Update this to your actual image storage path
   const IMAGE_BASE_URL = "https://shreedivyam.kdscrm.com/uploads/";
@@ -83,9 +85,9 @@ export default function MataRaniDresses() {
             >
               {products.map((product) => (
                 <SwiperSlide key={product.id}>
-                  <div className="overflow-hidden bg-white ring-1 ring-[#EFEAE4] h-full flex flex-col">
+                  <div className="overflow-hidden bg-white ring-1 ring-[#EFEAE4] h-full lg:h-[540px] flex flex-col">
                     <div className="p-[10px] pb-0">
-                      <div className="aspect-[1/0.84] w-full h-auto max-h-[340px] overflow-hidden bg-[#F3F3F3]">
+                      <div className="aspect-[1/0.84] w-full h-auto max-h-[280px] overflow-hidden bg-[#F3F3F3]">
                         <img
                           src={product.image_path?.startsWith('http') ? product.image_path : `${IMAGE_BASE_URL}${product.image_path}`}
                           alt={product.name}
@@ -109,7 +111,7 @@ export default function MataRaniDresses() {
                       </p>
 
                       <p className="mt-3 text-[24px] font-bold font-gt-walsheim text-[#7A1F3D]">
-                        {product.currency === "INR" ? "₹" : product.currency}{product.price}
+                        {formatPrice(product.price, product.usd_price)}
                       </p>
 
                       <div className="mt-auto pt-4 flex flex-col gap-3 min-[480px]:flex-row">
@@ -156,4 +158,4 @@ export default function MataRaniDresses() {
       </div>
     </section>
   );
-}
+}

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { products as staticProducts } from "../data/products";
+import { useCurrency } from "../context/CurrencyContext";
 
 // Swiper styles
 import "swiper/css";
@@ -14,6 +15,7 @@ import "swiper/css/navigation";
 export default function LadduGopalDresses() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
 
   // Update this to your actual image storage path
   const IMAGE_BASE_URL = "https://shreedivyam.kdscrm.com/uploads/";
@@ -115,7 +117,7 @@ export default function LadduGopalDresses() {
                   </p>
 
                   <p className="text-[18px] sm:text-[19px] md:text-[24px] font-bold text-[#7A1F3D] mb-4">
-                    {dress.currency === "INR" ? "₹" : dress.currency}{dress.price}
+                    {formatPrice(dress.price, dress.usd_price)}
                   </p>
 
                   {/* BUTTONS */}
@@ -152,4 +154,4 @@ export default function LadduGopalDresses() {
       </div>
     </section>
   );
-}
+}

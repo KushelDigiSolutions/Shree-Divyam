@@ -26,6 +26,7 @@ export default async function CategoryPage({ params }) {
         slug: p.slug,
         description: p.short_description || "Premium Dress",
         price: p.price,
+        usdPrice: p.usd_price,
         image: `${IMAGE_BASE_URL}${p.image_path}`,
       }));
 
