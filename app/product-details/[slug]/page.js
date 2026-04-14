@@ -2,100 +2,147 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import StayInTouch from "../../components/StayInTouch";
 import ProductCard from "../../components/ProductCard";
-import ProductGallery from "../../components/ProductGallery";
+import ProductContainer from "../../components/ProductContainer";
 import ProductInfo from "../../components/ProductInfo";
-import { products } from "../../data/products";
 import { notFound } from "next/navigation";
 
 export default async function ProductDetailsPage({ params }) {
   const { slug } = await params;
-  const product = products.find((p) => p.slug === slug);
 
-  if (!product) {
+  let productFromApi = null;
+  let relatedProductsApi = [];
+
+  try {
+    const res = await fetch(`https://shreedivyam.kdscrm.com/api/products/${slug}`, { next: { revalidate: 60 } });
+    const data = await res.json();
+    if (data && data.product) {
+      productFromApi = { 
+        ...data.product,
+        // Override with root-level fields if they exist (specific to some API structures)
+        price: data.price || data.product.price,
+        images: data.images || data.product.images,
+        variations: data.variants || data.product.variations || data.product.variants,
+        usd_price: data.usd_price || data.product.usd_price
+      };
+    }
+  } catch (error) {
+    console.error("Failed to fetch product:", error);
+  }
+
+  if (!productFromApi) {
     notFound();
   }
 
-  // Use some of the other products as related products
-  const relatedProducts = products.filter((p) => p.id !== product.id).slice(0, 3);
+  // Fetch category products for 'People Also Bought' / related items
+  if (productFromApi.category?.slug) {
+    try {
+      const relatedRes = await fetch(`https://shreedivyam.kdscrm.com/api/products/category/${productFromApi.category.slug}`, { next: { revalidate: 60 } });
+      const relatedData = await relatedRes.json();
+      if (relatedData && relatedData.products) {
+        relatedProductsApi = relatedData.products.filter(p => p.id !== productFromApi.id).slice(0, 3);
+      }
+    } catch (e) {
+      console.error("Failed to fetch related products:", e);
+    }
+  }
+
+  const IMAGE_BASE_URL = "https://shreedivyam.kdscrm.com/uploads/";
+
+  // Map API fields to our expected layout structure
+  const product = {
+    id: productFromApi.id,
+    title: productFromApi.name || productFromApi.product_name || "Premium Dress",
+    price: productFromApi.price,
+    usdPrice: productFromApi.usd_price,
+    basePrice: Number(productFromApi.price) || 0,
+    currency: productFromApi.currency || '₹',
+    variations: productFromApi.variations || [],
+    description: (productFromApi.short_description || productFromApi.description || productFromApi.product_specification || "")
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim(),
+    fullDescription: (productFromApi.product_detail || productFromApi.description || "")
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')
+      || productFromApi.product_specification,
+    category: productFromApi.sku_name || productFromApi.category?.name || "N/A",
+    type: productFromApi.sub_category?.name || "N/A",
+    color: productFromApi.variations?.[0]?.color || "N/A",
+    material: "Premium Material", // Fallback, no direct field mapping
+    work: "Standard",
+    packaging: "Standard",
+    care: "See label",
+    images: (() => {
+      let imgs = [];
+      if (productFromApi.image_path) imgs.push(productFromApi.image_path);
+
+      let additionalImgs = productFromApi.images;
+      if (typeof additionalImgs === 'string') {
+        try {
+          // Check if it's a JSON stringified array
+          if (additionalImgs.startsWith('[') && additionalImgs.endsWith(']')) {
+            additionalImgs = JSON.parse(additionalImgs);
+          } else {
+            // Otherwise treat as a single string
+            additionalImgs = [additionalImgs];
+          }
+        } catch (e) {
+          additionalImgs = [additionalImgs];
+        }
+      }
+
+      if (Array.isArray(additionalImgs)) {
+        imgs = [...imgs, ...additionalImgs];
+      }
+
+      // Deduplicate and filter out empty strings
+      imgs = [...new Set(imgs.filter(img => img && typeof img === 'string'))];
+
+      return imgs.map(img => img.startsWith('http') ? img : `${IMAGE_BASE_URL}${img}`);
+    })(),
+    // Fallback if no images are found at all
+    ...((!productFromApi.image_path && (!productFromApi.images || productFromApi.images.length === 0)) ? {
+      images: ["https://placehold.co/800x800?text=No+Image+Available"]
+    } : {}),
+    sizes: (() => {
+      const s = productFromApi.options?.sizes || productFromApi.variations?.map(v => v.size).filter((value, index, self) => self.indexOf(value) === index) || [];
+      return s.length > 0 ? s : ["Free Size"];
+    })(),
+    colors: (() => {
+      const c = productFromApi.options?.colors || productFromApi.variations?.map(v => v.color).filter((value, index, self) => self.indexOf(value) === index) || [];
+      return c.length > 0 ? c : ["#303030"];
+    })(),
+  };
+
+  const relatedProducts = relatedProductsApi.map(p => ({
+    id: p.id,
+    title: p.name,
+    description: p.short_description || "Premium Dress",
+    price: p.price,
+    usdPrice: p.usd_price,
+    image: `${IMAGE_BASE_URL}${p.image_path}`,
+  }));
 
   return (
     <main className="bg-[#FFFFFF] text-[#2f2a28]">
       <Header />
 
-      <section className="mx-auto max-w-[1220px] h-auto min-h-[800px] px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid gap-10 grid-cols-1 lg:grid-cols-[1.05fr_1fr_0.95fr]">
-          <ProductInfo product={product} />
-          <ProductGallery images={product.images} />
-          <div className="lg:pl-2">
-            <div className="border border-[#ddd2c4] bg-white p-5">
-              <h2 className="border-b border-[#ded6ca] pb-3 text-[28px] font-medium text-[#4a3b33]">
-                Product Details
-              </h2>
+      <section className="mx-auto max-w-[1440px] h-auto min-h-[800px] px-4 sm:px-8 md:px-16 lg:px-24 py-8">
+        <ProductContainer product={product} />
+      </section>
 
-              <div className="space-y-3 pt-4 text-[14px] leading-6 text-[#4c4742]">
-                <p>
-                  <span className="font-semibold text-[#6f5a4d]">Product Code :</span>{" "}
-                  {product.category}
-                </p>
-                <p>
-                  <span className="font-semibold text-[#6f5a4d]">Type :</span> {product.type}
-                </p>
-                <p>
-                  <span className="font-semibold text-[#6f5a4d]">Color :</span> {product.color}
-                </p>
-                <p>
-                  <span className="font-semibold text-[#6f5a4d]">Material :</span> {product.material}
-                </p>
-                <p>
-                  <span className="font-semibold text-[#6f5a4d]">Work :</span> {product.work}
-                </p>
-                <p>
-                  <span className="font-semibold text-[#6f5a4d]">Packaging :</span> {product.packaging}
-                </p>
-                <p>
-                  <span className="font-semibold text-[#6f5a4d]">Care :</span> {product.care}
-                </p>
+      {relatedProducts.length > 0 && (
+        <section className="bg-[#efe6d6] py-12">
+          <div className="mx-auto max-w-[1220px] px-4 sm:px-6 lg:px-8">
+            <h2 className="mb-8 text-center text-[34px] font-medium text-[#4a3b33]">
+              People Also Bought
+            </h2>
 
-                <p className="pt-1 text-[13px] leading-6 text-[#6d6258]">
-                  <span className="font-semibold text-[#6f5a4d]">Disclaimer :</span>{" "}
-                  {product.description}
-                </p>
-
-                <div className="border-t border-[#e6ddd2] pt-3">
-                  <p className="mb-2 text-[13px] font-semibold text-[#6f5a4d]">
-                    Safe Checkout
-                  </p>
-                  <div className="flex items-center gap-2 text-[12px] text-[#3b5ea8]">
-                    <span className="rounded bg-[#f5f5f5] px-2 py-1 font-semibold text-[#1a4fb8]">
-                      VISA
-                    </span>
-                    <span className="rounded bg-[#f5f5f5] px-2 py-1 font-semibold text-[#d4382c]">
-                      ● ●
-                    </span>
-                    <span className="rounded bg-[#f5f5f5] px-2 py-1 font-semibold text-[#179bd7]">
-                      PayPal
-                    </span>
-                  </div>
-                </div>
-              </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {relatedProducts.map((item) => (
+                <ProductCard key={item.id} product={item} />
+              ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="bg-[#efe6d6] py-12">
-        <div className="mx-auto max-w-[1220px] px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-8 text-center text-[34px] font-medium text-[#4a3b33]">
-            People Also Bought
-          </h2>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {relatedProducts.map((item) => (
-              <ProductCard key={item.id} product={item} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <StayInTouch />
       <Footer />

@@ -9,7 +9,7 @@ export default function ProductGallery({ images }) {
   return (
     <div className="w-full">
       <div className="overflow-hidden border border-[#ddd2c4] bg-white">
-        <div className="relative aspect-[395/600] w-full max-w-[395px] mx-auto md:max-w-none">
+        <div className="relative aspect-[4/5] w-full">
           <Image
             src={activeImage}
             alt="Product Image"
