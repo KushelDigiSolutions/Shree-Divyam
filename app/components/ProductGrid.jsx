@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { products as staticProducts } from "../data/products";
@@ -13,6 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 export default function ProductGrid() {
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { formatPrice } = useCurrency();
@@ -126,7 +128,22 @@ export default function ProductGrid() {
                         Shop Now
                       </button>
                     </Link>
-                    <button className="w-full border border-[#7A1F3D] text-[#7A1F3D] py-2.5 text-[14px] font-medium hover:bg-[#7A1F3D] hover:text-white transition-all duration-300 cursor-pointer">
+                    <button 
+                      onClick={() => {
+                        const params = new URLSearchParams({
+                          productId: product.id,
+                          name: product.name,
+                          image: product.image_path?.startsWith('http') ? product.image_path : `${IMAGE_BASE_URL}${product.image_path}`,
+                          price: formatPrice(product.price, product.usd_price),
+                          // We don't have variants here, so we let the cart page handles it or redirect to details
+                          // For now we'll pass a flag to tell cart page it needs to find a variant
+                          needsVariant: "true",
+                          slug: product.slug
+                        });
+                        router.push(`/cart?${params.toString()}`);
+                      }}
+                      className="w-full border border-[#7A1F3D] text-[#7A1F3D] py-2.5 text-[14px] font-medium hover:bg-[#7A1F3D] hover:text-white transition-all duration-300 cursor-pointer"
+                    >
                       Add to Cart
                     </button>
                   </div>

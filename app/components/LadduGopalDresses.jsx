@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter} from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { products as staticProducts } from "../data/products";
@@ -13,6 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 export default function LadduGopalDresses() {
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { formatPrice } = useCurrency();
@@ -129,7 +131,20 @@ export default function LadduGopalDresses() {
                         Shop Now
                       </button>
                     </Link>
-                    <button className="w-full border border-[#7A1F3D] text-[#7A1F3D] py-2 md:py-2.5 text-[13px] md:text-[14px] font-gt-walsheim font-medium hover:bg-[#7A1F3D] hover:text-white transition-all duration-300 cursor-pointer">
+                    <button 
+                      onClick={() => {
+                        const params = new URLSearchParams({
+                          productId: dress.id,
+                          name: dress.name,
+                          image: dress.image_path?.startsWith('http') ? dress.image_path : `${IMAGE_BASE_URL}${dress.image_path}`,
+                          price: formatPrice(dress.price, dress.usd_price),
+                          needsVariant: "true",
+                          slug: dress.slug
+                        });
+                        router.push(`/cart?${params.toString()}`);
+                      }}
+                      className="w-full border border-[#7A1F3D] text-[#7A1F3D] py-2 md:py-2.5 text-[13px] md:text-[14px] font-gt-walsheim font-medium hover:bg-[#7A1F3D] hover:text-white transition-all duration-300 cursor-pointer"
+                    >
                       Add to Cart
                     </button>
                   </div>

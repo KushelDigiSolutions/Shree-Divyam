@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useCurrency } from "../context/CurrencyContext";
 import { Share, Info } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function ProductInfo({
     product,
@@ -14,6 +15,9 @@ export default function ProductInfo({
     const [internalQuantity, setQuantity] = useState(1);
     const [internalSize, setInternalSize] = useState(product.sizes[0]);
     const [internalColor, setInternalColor] = useState(product.colors[0]);
+
+    const [isAdding, setIsAdding] = useState(false);
+    const [message, setMessage] = useState({ type: "", text: "" });
 
     const quantity = internalQuantity;
     const selectedSize = propSize !== undefined ? propSize : internalSize;
@@ -40,6 +44,27 @@ export default function ProductInfo({
     // Determine the active price
     const variationPrice = variation ? Number(variation.price) : 0;
     const currentPrice = variationPrice > 0 ? variationPrice : (product.basePrice || 0);
+
+    const router = useRouter();
+
+    const handleAddToCart = () => {
+        if (!variation || !variation.id) {
+            setMessage({ type: "error", text: "Please select a valid variant" });
+            return;
+        }
+
+        const params = new URLSearchParams({
+            productId: product.id,
+            variantId: variation.id,
+            quantity: quantity.toString(),
+            name: product.title,
+            image: product.images?.[0] || "",
+            price: formatPrice(currentPrice, variation?.usd_price || product.usdPrice),
+            variantName: `${selectedSize} / ${selectedColor}`
+        });
+
+        router.push(`/cart?${params.toString()}`);
+    };
 
     return (
         <div className="w-full font-gt-walsheim relative flex flex-col items-center lg:items-start text-center lg:text-left px-4 sm:px-6 lg:px-0">
@@ -136,9 +161,26 @@ export default function ProductInfo({
                     Shop Now
                 </button>
 
-                <button className="w-full border border-[#7A1F3D] bg-white py-3 sm:py-4 text-[13px] sm:text-[15px] font-bold uppercase tracking-widest text-[#7A1F3D] transition-all duration-300 hover:bg-[#7A1F3D] hover:text-white cursor-pointer rounded-sm active:scale-95">
-                    Add To Cart
+                <button
+                    onClick={handleAddToCart}
+                    disabled={isAdding}
+                    className={`w-full border border-[#7A1F3D] bg-white py-3 sm:py-4 text-[13px] sm:text-[15px] font-bold uppercase tracking-widest text-[#7A1F3D] transition-all duration-300 hover:bg-[#7A1F3D] hover:text-white cursor-pointer rounded-sm active:scale-95 flex items-center justify-center gap-2 ${isAdding ? "opacity-70 cursor-not-allowed" : ""}`}
+                >
+                    {isAdding ? (
+                        <>
+                            <span className="w-4 h-4 border-2 border-[#7A1F3D] border-t-transparent rounded-full animate-spin"></span>
+                            Adding...
+                        </>
+                    ) : (
+                        "Add To Cart"
+                    )}
                 </button>
+
+                {message.text && (
+                    <p className={`text-center text-[12px] font-medium mt-2 p-2 rounded-sm ${message.type === "success" ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700 border border-red-200"}`}>
+                        {message.text}
+                    </p>
+                )}
 
                 <p className="text-[11px] sm:text-[12px] text-center text-gray-500 italic">
                     Shipping calculated at checkout

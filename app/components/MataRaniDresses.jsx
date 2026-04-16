@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { products as staticProducts } from "../data/products";
@@ -13,6 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 export default function MataRaniDresses() {
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { formatPrice } = useCurrency();
@@ -126,7 +128,20 @@ export default function MataRaniDresses() {
                             Shop Now
                           </button>
                         </Link>
-                        <button className="flex-1 border border-[#7A1F3D] bg-white px-4 py-2 md:py-3 text-[13px] md:text-[14px] font-medium text-[#7A1F3D] transition-all duration-300 hover:bg-[#7A1F3D] hover:text-white cursor-pointer">
+                        <button 
+                          onClick={() => {
+                            const params = new URLSearchParams({
+                              productId: product.id.toString(),
+                              name: product.name,
+                              image: product.image_path?.startsWith('http') ? product.image_path : `${IMAGE_BASE_URL}${product.image_path}`,
+                              price: formatPrice(product.price, product.usd_price),
+                              needsVariant: "true",
+                              slug: product.slug
+                            });
+                            router.push(`/cart?${params.toString()}`);
+                          }}
+                          className="flex-1 border border-[#7A1F3D] bg-white px-4 py-2 md:py-3 text-[13px] md:text-[14px] font-medium text-[#7A1F3D] transition-all duration-300 hover:bg-[#7A1F3D] hover:text-white cursor-pointer"
+                        >
                           Add to Cart
                         </button>
                       </div>

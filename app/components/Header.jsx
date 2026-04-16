@@ -42,10 +42,10 @@ export default function Header() {
                 <img src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774855916/Mask_group_szptm7.png" alt="wishlist" className="h-4 md:h-5 w-auto" />
                 <span>Wishlist</span>
               </div>
-              <div className="flex items-center gap-1.5 md:gap-2 cursor-pointer">
+              <Link href="/cart" className="flex items-center gap-1.5 md:gap-2 cursor-pointer hover:text-white  transition-colors">
                 <img src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774855916/Mask_group_2_zcgcsh.png" alt="bag" className="h-4 md:h-5 w-auto" />
                 <span>My Bag</span>
-              </div>
+              </Link>
 
               {/* 💱 Currency Toggle */}
               <CurrencyToggle />
@@ -81,7 +81,7 @@ export default function Header() {
         {/* 📱 Mobile Menu Content */}
         {isMenuOpen && (
           <div className="md:hidden fixed inset-0 z-[60] bg-black/50" onClick={() => setIsMenuOpen(false)}>
-            <div 
+            <div
               className="absolute right-0 top-0 bottom-0 w-[280px] bg-white shadow-2xl flex flex-col p-6 animate-in slide-in-from-right duration-300"
               onClick={(e) => e.stopPropagation()}
             >

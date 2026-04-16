@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight, Loader2 } from "lucide-react";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { products as staticProducts } from "../data/products";
 import { useCurrency } from "../context/CurrencyContext";
 
@@ -13,6 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 export default function LatestCollection() {
+  const router = useRouter();
   const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { formatPrice } = useCurrency();
@@ -151,7 +153,20 @@ export default function LatestCollection() {
                               </button>
                             </Link>
 
-                            <button className="flex-1 border border-[#7A1F3D] text-[#7A1F3D] py-2.5 text-[14px] font-semibold hover:bg-[#7A1F3D] hover:text-white transition-all duration-300 cursor-pointer">
+                            <button 
+                              onClick={() => {
+                                const params = new URLSearchParams({
+                                  productId: product.id.toString(),
+                                  name: product.name,
+                                  image: `${IMAGE_BASE_URL}${product.image_path}`,
+                                  price: formatPrice(product.price, product.usd_price),
+                                  needsVariant: "true",
+                                  slug: product.slug
+                                });
+                                router.push(`/cart?${params.toString()}`);
+                              }}
+                              className="flex-1 border border-[#7A1F3D] text-[#7A1F3D] py-2.5 text-[14px] font-semibold hover:bg-[#7A1F3D] hover:text-white transition-all duration-300 cursor-pointer"
+                            >
                               Add to Cart
                             </button>
                           </div>
