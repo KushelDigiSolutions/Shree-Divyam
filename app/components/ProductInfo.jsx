@@ -38,52 +38,51 @@ export default function ProductInfo({
     const variation = activeVariation || fallbackVariation;
 
     // Determine the active price
-    const variationPrice = variation ? Number(variation.extra_price) : 0;
+    const variationPrice = variation ? Number(variation.price) : 0;
     const currentPrice = variationPrice > 0 ? variationPrice : (product.basePrice || 0);
 
     return (
-        <div className="w-full font-gt-walsheim relative">
+        <div className="w-full font-gt-walsheim relative flex flex-col items-center lg:items-start text-center lg:text-left px-4 sm:px-6 lg:px-0">
             {/* Background Watermark */}
             <div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-contain bg-no-repeat bg-center z-[-1] opacity-[0.04] pointer-events-none"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px] bg-contain bg-no-repeat bg-center z-[-1] opacity-[0.03] sm:opacity-[0.04] pointer-events-none"
                 style={{ backgroundImage: 'url("https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856924/Where%20Devotion%20Meets%20Royal%20Elegance.png")' }}
             />
 
-            <h1 className="w-full lg:max-w-[450px] text-[32px] font-playfair font-medium leading-[1.15] text-[#303030]">
+            <h1 className="w-full lg:max-w-[450px] text-[22px] sm:text-[28px] md:text-[32px] font-playfair font-medium leading-[1.2] text-[#303030]">
                 {product.title}
             </h1>
 
-            <p className="mt-2 text-[12px] uppercase tracking-[0.25em] font-medium text-[#9CA3AF]">
+            <p className="mt-2 text-[10px] sm:text-[12px] uppercase tracking-[0.2em] sm:tracking-[0.25em] font-medium text-[#9CA3AF]">
                 Online Exclusive
             </p>
 
-            <div className="mt-4 flex items-baseline gap-1.5 flex-wrap">
-                <span className="text-[26px] font-bold text-[#7A1F3D]">
+            <div className="mt-3 sm:mt-4 flex items-baseline gap-2 flex-wrap justify-center lg:justify-start">
+                <span className="text-[20px] sm:text-[26px] font-bold text-[#7A1F3D]">
                     {formatPrice(currentPrice, variation?.usd_price || product.usdPrice)}
                 </span>
             </div>
 
-            <p className="mt-1 text-[11px] uppercase tracking-wider font-semibold text-[#6B7280]">
+            <p className="mt-1 text-[9px] sm:text-[11px] uppercase tracking-wider font-semibold text-gray-500">
                 {selectedColor} {product.material ? `+ ${product.material}` : ''}
             </p>
 
 
-
-            <div className="mt-8">
-                <div className="flex items-center justify-between lg:max-w-[320px] mb-2.5">
-                    <p className="text-[14px] font-semibold text-[#303030]">Size: {selectedSize}</p>
-                    <button className="text-[12px] font-medium text-[#3b5ea8] underline border-none bg-transparent cursor-pointer">
+            <div className="mt-6 sm:mt-8 w-full">
+                <div className="flex items-center justify-between lg:max-w-[320px] mb-2 sm:mb-3">
+                    <p className="text-[13px] sm:text-[14px] font-semibold text-[#303030]">Size: {selectedSize}</p>
+                    <button className="text-[11px] sm:text-[12px] font-medium text-[#3b5ea8] underline border-none bg-transparent cursor-pointer">
                         Find your size
                     </button>
                 </div>
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2 sm:gap-2.5 justify-center lg:justify-start">
                     {product.sizes.map((size) => (
                         <button
                             key={size}
                             onClick={() => setSelectedSize(size)}
-                            className={`flex h-[42px] min-w-[42px] px-3 items-center font-medium justify-center border transition ${selectedSize === size
-                                ? "border-[#7A1F3D] bg-[#7A1F3D] text-white"
-                                : "border-[#e5e7eb] bg-white text-[#303030] hover:border-[#7A1F3D]"
+                            className={`flex h-[36px] min-w-[36px] sm:h-[42px] sm:min-w-[42px] px-2.5 sm:px-3 items-center font-medium justify-center border transition cursor-pointer rounded-sm text-[13px] sm:text-base ${selectedSize === size
+                                ? "border-[#7A1F3D] bg-[#7A1F3D] text-white shadow-sm"
+                                : "border-gray-200 bg-white text-[#303030] hover:border-[#7A1F3D]"
                                 }`}
                         >
                             {size}
@@ -92,35 +91,35 @@ export default function ProductInfo({
                 </div>
             </div>
 
-            <div className="mt-6">
-                <p className="mb-2.5 text-[14px] font-semibold text-[#303030]">Quantity</p>
-                <div className="flex h-10 w-[110px] items-center border border-[#e5e7eb] bg-white">
+            <div className="mt-6 sm:mt-7 w-full">
+                <p className="mb-2 sm:mb-3 text-[13px] sm:text-[14px] font-semibold text-[#303030]">Quantity</p>
+                <div className="flex h-10 sm:h-11 w-[110px] sm:w-[120px] mx-auto lg:mx-0 items-center border border-gray-200 bg-white rounded-sm overflow-hidden shadow-sm">
                     <button
                         onClick={decrement}
-                        className="flex h-full w-10 items-center justify-center text-[#303030] hover:bg-gray-50 transition"
+                        className="flex h-full w-9 sm:w-10 items-center justify-center text-[#303030] hover:bg-gray-50 transition cursor-pointer text-base sm:text-lg"
                     >
                         -
                     </button>
-                    <div className="flex flex-1 items-center justify-center border-x border-[#e5e7eb] text-[15px] font-medium">
+                    <div className="flex flex-1 items-center justify-center border-x border-gray-100 text-[14px] sm:text-[15px] font-semibold">
                         {quantity}
                     </div>
                     <button
                         onClick={increment}
-                        className="flex h-full w-10 items-center justify-center text-[#303030] hover:bg-gray-50 transition"
+                        className="flex h-full w-9 sm:w-10 items-center justify-center text-[#303030] hover:bg-gray-50 transition cursor-pointer text-base sm:text-lg"
                     >
                         +
                     </button>
                 </div>
             </div>
 
-            <div className="mt-6">
-                <p className="mb-2.5 text-[14px] font-semibold text-[#303030]">Select Color</p>
-                <div className="flex gap-3.5">
+            <div className="mt-6 sm:mt-7 w-full">
+                <p className="mb-2 sm:mb-3 text-[13px] sm:text-[14px] font-semibold text-[#303030]">Select Color</p>
+                <div className="flex gap-3 sm:gap-4 justify-center lg:justify-start">
                     {product.colors.map((color) => (
                         <button
                             key={color}
                             onClick={() => setSelectedColor(color)}
-                            className={`h-[34px] w-[34px] rounded-full border-2 transition-all ${selectedColor === color ? "border-[#303030] p-0.5" : "border-transparent"
+                            className={`h-[30px] w-[30px] sm:h-[36px] sm:w-[36px] rounded-full border-2 transition-all cursor-pointer shadow-sm ${selectedColor === color ? "border-[#7A1F3D] p-0.5" : "border-transparent"
                                 }`}
                         >
                             <div
@@ -132,50 +131,54 @@ export default function ProductInfo({
                 </div>
             </div>
 
-            <div className="mt-8 w-full lg:max-w-[320px] space-y-3.5">
-                <button className="w-full bg-[#7A1F3D] py-4 text-[15px] font-semibold uppercase tracking-wider text-white transition hover:bg-[#6c1b36] shadow-sm">
+            <div className="mt-8 sm:mt-10 w-full lg:max-w-[320px] space-y-3.5 sm:space-y-4">
+                <button className="w-full bg-[#7A1F3D] border border-[#7A1F3D] py-3 sm:py-4 text-[13px] sm:text-[15px] font-bold uppercase tracking-widest text-white transition-all duration-300 hover:bg-white hover:text-[#7A1F3D] shadow-md cursor-pointer rounded-sm active:scale-95">
                     Shop Now
                 </button>
 
-                <button className="w-full border border-[#7A1F3D] bg-white py-4 text-[15px] font-semibold uppercase tracking-wider text-[#7A1F3D] transition hover:bg-[#fff9fa]">
+                <button className="w-full border border-[#7A1F3D] bg-white py-3 sm:py-4 text-[13px] sm:text-[15px] font-bold uppercase tracking-widest text-[#7A1F3D] transition-all duration-300 hover:bg-[#7A1F3D] hover:text-white cursor-pointer rounded-sm active:scale-95">
                     Add To Cart
                 </button>
 
-                <p className="text-[12px] text-center text-[#6B7280]">
+                <p className="text-[11px] sm:text-[12px] text-center text-gray-500 italic">
                     Shipping calculated at checkout
                 </p>
             </div>
 
-            <div className="mt-7 w-full lg:max-w-[320px] border border-[#fce7ed] bg-[#fff9fa] rounded-sm p-4.5">
-                <div className="space-y-3 text-[13px] text-[#4b4742]">
-                    <div className="flex justify-between">
-                        <span>Delhi / NCR :</span>
-                        <span className="font-bold">2 - 4 Days</span>
+
+            <div className="mt-8 w-full lg:max-w-[320px] border border-[#fce7ed] bg-[#fff9fa] rounded-sm p-5 shadow-sm">
+                <div className="space-y-3.5 text-[13px] sm:text-[14px] text-gray-700">
+                    <div className="flex justify-between items-center">
+                        <span className="font-medium">Delhi / NCR :</span>
+                        <span className="font-bold text-[#7A1F3D] bg-white/60 px-2 py-0.5 rounded">2 - 4 Days</span>
                     </div>
 
-                    <div className="flex justify-between">
-                        <span>Rest of India :</span>
-                        <span className="font-bold">3 - 8 Days</span>
+                    <div className="flex justify-between items-center">
+                        <span className="font-medium">Rest of India :</span>
+                        <span className="font-bold text-[#7A1F3D] bg-white/60 px-2 py-0.5 rounded">3 - 8 Days</span>
                     </div>
 
-                    <div className="flex justify-between">
-                        <span>International :</span>
-                        <span className="font-bold">7 - 14 Days</span>
+                    <div className="flex justify-between items-center">
+                        <span className="font-medium">International :</span>
+                        <span className="font-bold text-[#7A1F3D] bg-white/60 px-2 py-0.5 rounded">7 - 14 Days</span>
                     </div>
                 </div>
 
-                <p className="mt-4 text-[12px] text-center font-medium text-[#7A1F3D]">
-                    COD available. Beware of fake websites.
-                </p>
+                <div className="mt-5 pt-4 border-t border-[#fce7ed] flex items-center justify-center gap-2">
+                    <Info size={14} className="text-[#7A1F3D]" />
+                    <p className="text-[11px] font-semibold text-[#7A1F3D] uppercase tracking-wider">
+                        COD available & Secure Payment
+                    </p>
+                </div>
             </div>
 
-            <div className="mt-6 flex items-center gap-6 text-[14px] font-medium text-[#4B5563]">
-                <button className="flex items-center gap-1.5 hover:text-[#303030] transition bg-transparent border-none cursor-pointer">
-                    <span className="text-[12px] border border-gray-400 rounded-full w-4 h-4 flex items-center justify-center">i</span>
+            <div className="mt-8 mb-4 flex items-center gap-8 text-[13px] sm:text-[14px] font-medium text-[#4B5563]">
+                <button className="flex items-center gap-2 hover:text-[#7A1F3D] transition bg-transparent border-none cursor-pointer group">
+                    <span className="text-[10px] border border-gray-400 font-bold group-hover:border-[#7A1F3D] rounded-full w-4.5 h-4.5 flex items-center justify-center">i</span>
                     Delivery & Return
                 </button>
-                <button className="flex items-center gap-1.5 hover:text-[#303030] transition bg-transparent border-none cursor-pointer">
-                    <span className="text-[12px] border border-gray-400 rounded-px w-4 h-4 flex items-center justify-center">S</span>
+                <button className="flex items-center gap-2 hover:text-[#7A1F3D] transition bg-transparent border-none cursor-pointer group">
+                    <Share size={16} className="group-hover:text-[#7A1F3D]" />
                     Share
                 </button>
             </div>

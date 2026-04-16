@@ -31,18 +31,19 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="mx-auto max-w-[1720px] bg-white py-12  sm:py-14 md:py-16 lg:py-20">
-      <div className="mx-auto max-w-[1440px] px-8 md:px-16 lg:px-24">
+    <section className="mx-auto max-w-[1720px] bg-white pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-12 sm:pb-14 md:pb-16 lg:pb-20">
+      <div className="mx-auto max-w-[1440px] px-6 sm:px-10 md:px-16 lg:px-24">
         <div className="max-w-[1120px]">
           {/* Header */}
           <div className="mb-8 sm:mb-10 md:mb-12">
-            <p className="text-[32px] font-gt-walsheim font-semibold tracking-[-0.01em] text-[#7A1F3D]">
+            <p className="text-[16px] sm:text-[24px] md:text-[32px] font-gt-walsheim font-semibold tracking-[-0.01em] text-[#7A1F3D]">
               FAQ
             </p>
-            <h2 className="mt-2 font-playfair text-[45px] font-bold leading-[1.15] text-[#0A243F] sm:text-[42px] md:text-[48px] lg:text-[52px]">
+            <h2 className="mt-1 sm:mt-2 font-playfair text-[24px] sm:text-[36px] md:text-[44px] lg:text-[52px] font-bold leading-tight text-[#0A243F]">
               Most asked questions
             </h2>
           </div>
+
 
           {/* FAQ List */}
           <div className="border-t border-[#E5E7EB]">
@@ -51,19 +52,19 @@ export default function FaqSection() {
               return (
                 <div
                   key={index}
-                  className="border-b border-[#E5E7EB] py-5 sm:py-6 md:py-7"
+                  className="border-b border-[#E5E7EB] py-4 sm:py-6 md:py-7"
                 >
                   <div 
                     className="flex cursor-pointer items-start justify-between gap-4"
                     onClick={() => toggleFaq(index)}
                   >
                     <div className="flex-1 pr-2">
-                      <h3 className="text-[17px] font-semibold font-gt-walsheim leading-[1.45] text-[#0A243F] sm:text-[20px]">
+                      <h3 className="text-[16px] sm:text-[18px] md:text-[20px] font-semibold font-gt-walsheim leading-[1.45] text-[#0A243F]">
                         {item.question}
                       </h3>
 
                       {isOpen && (
-                        <p className="mt-4 max-w-[980px] text-[14px] font-gt-walsheim font-light leading-[1.6] text-[#4B5563] sm:text-[15px]">
+                        <p className="mt-4 max-w-[980px] text-[13px] sm:text-[14px] md:text-[15px] font-gt-walsheim font-light leading-relaxed text-[#4B5563]">
                           {item.answer}
                         </p>
                       )}
@@ -74,9 +75,9 @@ export default function FaqSection() {
                       aria-label={isOpen ? "Collapse FAQ" : "Expand FAQ"}
                     >
                       {isOpen ? (
-                        <ChevronUp size={20} strokeWidth={2} />
+                        <ChevronUp size={20} strokeWidth={2} className="w-5 h-5 sm:w-6 sm:h-6" />
                       ) : (
-                        <ChevronDown size={20} strokeWidth={2} />
+                        <ChevronDown size={20} strokeWidth={2} className="w-5 h-5 sm:w-6 sm:h-6" />
                       )}
                     </button>
                   </div>

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import { products as staticProducts } from "../data/products";
 import { useCurrency } from "../context/CurrencyContext";
 
@@ -25,7 +25,7 @@ export default function ProductGrid() {
       try {
         const response = await fetch("https://shreedivyam.kdscrm.com/api/products/category/radhe-rani");
         const json = await response.json();
-        
+
         if (json.products && Array.isArray(json.products)) {
           setProducts(json.products);
         }
@@ -47,54 +47,60 @@ export default function ProductGrid() {
     );
   }
 
+  // Repeater logic: if products are 3 or less, repeat them to make the carousel functional
+  const displayProducts = (products.length > 0 && products.length <= 3)
+    ? [...products, ...products, ...products]
+    : products;
+
   return (
-    <section className="mx-auto max-w-[1720px] bg-[#FDF8F3] py-14 sm:py-16 md:py-20">
-      <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24">
+    <section className="mx-auto max-w-[1720px] bg-[#FDF8F3] py-10 sm:py-16 md:py-20">
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-12 md:px-16 lg:px-24">
 
         {/* HEADER */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10 md:mb-14">
-          <h2 className="text-[32px] md:text-[36px] font-playfair font-semibold text-[#303030]">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8 md:mb-14">
+          <h2 className="text-[24px] sm:text-[32px] md:text-[36px] font-playfair font-semibold text-[#303030]">
             Radha Krishna ji Dresses
           </h2>
 
-          <div className="flex gap-3 self-start sm:self-auto">
-            <button className="rk-prev w-10 h-10 flex items-center justify-center border border-[#D6D6D6] rounded-full hover:bg-[#7A1F3D] hover:text-white transition cursor-pointer">
-              <ChevronLeft size={18} />
+          <div className="flex gap-2 sm:gap-3 self-start sm:self-auto">
+            <button className="rk-prev w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border border-[#D6D6D6] rounded-full hover:bg-[#7A1F3D] hover:text-white transition cursor-pointer">
+              <ChevronLeft size={16} className="md:w-[18px]" />
             </button>
-            <button className="rk-next w-10 h-10 flex items-center justify-center rounded-full bg-[#7A1F3D] text-white hover:bg-[#5E182F] transition cursor-pointer">
-              <ChevronRight size={18} />
+            <button className="rk-next w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#7A1F3D] text-white hover:bg-[#5E182F] transition cursor-pointer">
+              <ChevronRight size={16} className="md:w-[18px]" />
             </button>
           </div>
         </div>
 
         {/* CAROUSEL */}
         <Swiper
-          modules={[Navigation, Autoplay]}
+          modules={[Navigation]}
           navigation={{ prevEl: ".rk-prev", nextEl: ".rk-next" }}
-          spaceBetween={30}
-          slidesPerView={1}
-          autoplay={{ delay: 4000 }}
+          spaceBetween={16}
+          slidesPerView={1.2}
           breakpoints={{
-            640: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
+            480: { slidesPerView: 1.5, spaceBetween: 20 },
+            768: { slidesPerView: 2, spaceBetween: 24 },
+            1024: { slidesPerView: 3, spaceBetween: 30 },
           }}
           className="w-full"
         >
-          {products.map((product) => (
-            <SwiperSlide key={product.id}>
-              <div className="bg-white w-full max-w-[400px] h-full min-h-[545px] shadow-sm hover:shadow-md transition overflow-hidden flex flex-col mx-auto">
-                
+
+          {displayProducts.map((product, index) => (
+            <SwiperSlide key={`${product.id}-${index}`}>
+              <div className="bg-white w-full max-w-[400px] h-full min-h-[460px] sm:min-h-[545px] shadow-sm hover:shadow-md transition overflow-hidden flex flex-col mx-auto cursor-pointer group rounded-sm border border-[#E8DDD4]">
+
                 {/* IMAGE */}
                 <div className="w-full aspect-[4/3] bg-gray-100 overflow-hidden">
                   <img
                     src={product.image_path?.startsWith('http') ? product.image_path : `${IMAGE_BASE_URL}${product.image_path}`}
                     alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     onError={(e) => {
                       e.target.onerror = null;
                       // Fallback to the image present in our static data based on name or slug
                       const fallbackProduct = staticProducts.find((p) => p.title.toLowerCase() === product.name.toLowerCase() || p.slug === product.slug);
-                      
+
                       // If specific match not found, use a consistent fallback from staticProducts
                       e.target.src = fallbackProduct ? fallbackProduct.image : staticProducts[product.id % staticProducts.length].image;
                     }}
@@ -103,7 +109,7 @@ export default function ProductGrid() {
 
                 {/* CONTENT */}
                 <div className="p-5 md:p-6 flex flex-col flex-1">
-                  <h4 className="text-[19px] md:text-[21px] font-medium text-[#303030] mb-2 line-clamp-1">
+                  <h4 className="text-[19px] md:text-[21px] font-medium text-[#303030] mb-2 line-clamp-1 group-hover:text-[#7A1F3D] transition-colors">
                     {product.name}
                   </h4>
                   <p className="text-[14px] text-gray-600 mb-4 line-clamp-2">
@@ -116,11 +122,11 @@ export default function ProductGrid() {
                   {/* BUTTONS */}
                   <div className="flex flex-col sm:flex-row gap-2 mt-auto">
                     <Link href={`/product-details/${product.slug}`} className="w-full">
-                      <button className="w-full bg-[#7A1F3D] text-white py-2.5 text-[14px] font-medium hover:bg-[#5E182F] transition">
+                      <button className="w-full bg-[#7A1F3D] border border-[#7A1F3D] text-white py-2.5 text-[14px] font-medium hover:bg-white hover:text-[#7A1F3D] transition-all duration-300 cursor-pointer">
                         Shop Now
                       </button>
                     </Link>
-                    <button className="w-full border border-[#7A1F3D] text-[#7A1F3D] py-2.5 text-[14px] font-medium hover:bg-[#7A1F3D]/10 transition">
+                    <button className="w-full border border-[#7A1F3D] text-[#7A1F3D] py-2.5 text-[14px] font-medium hover:bg-[#7A1F3D] hover:text-white transition-all duration-300 cursor-pointer">
                       Add to Cart
                     </button>
                   </div>

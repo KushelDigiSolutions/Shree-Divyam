@@ -40,12 +40,12 @@ export default function LatestCollection() {
   }, []);
 
   return (
-    <section className="mx-auto max-w-[1720px] bg-[#F5F5F7] py-20">
-      <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24">
+    <section className="mx-auto max-w-[1720px] bg-[#F5F5F7] py-12 md:py-20">
+      <div className="max-w-[1720px] mx-auto px-6 sm:px-12 md:px-16 lg:px-24">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
 
           {/* LEFT BANNER */}
-          <div className="relative w-full lg:w-[584px] h-[400px] lg:h-[600px] overflow-hidden group bg-gray-200">
+          <div className="relative w-full lg:w-[584px] h-[300px] sm:h-[400px] lg:h-[600px] overflow-hidden group bg-gray-200">
             <img
               src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856926/krishna-image.png"
               alt="Banner"
@@ -56,12 +56,12 @@ export default function LatestCollection() {
             <div className="absolute inset-0 bg-black/40"></div>
 
             {/* Text */}
-            <div className="absolute inset-0 flex flex-col justify-center px-12">
-              <h3 className="text-[28px] sm:text-[34px] lg:text-[40px] leading-tight font-serif text-white mb-8">
+            <div className="absolute inset-0 flex flex-col justify-center px-8 sm:px-12">
+              <h3 className="text-[24px] sm:text-[32px] lg:text-[40px] leading-tight font-serif text-white mb-6 md:mb-8">
                 Let Your Love <br className="hidden sm:block" /> Tick Forever
               </h3>
 
-              <button className="flex items-center gap-2 bg-white text-black px-6 py-3 w-fit text-[15px] font-medium hover:bg-gray-100 transition">
+              <button className="flex items-center gap-2 bg-white text-black px-5 sm:px-6 py-2.5 sm:py-3 w-fit text-[14px] sm:text-[15px] font-medium hover:bg-gray-100 transition">
                 Shop Now <ArrowRight size={18} />
               </button>
             </div>
@@ -71,53 +71,55 @@ export default function LatestCollection() {
           <div className="w-full lg:flex-1 min-w-0 flex flex-col">
 
             {/* HEADER */}
-            <div className="flex items-center justify-between mb-10">
-              <h2 className="text-[24px] sm:text-[28px] lg:text-[32px] font-playfair font-semibold text-[#303030]">
+            <div className="flex items-center justify-between mb-8 md:mb-10">
+              <h2 className="text-[22px] sm:text-[28px] lg:text-[32px] font-playfair font-semibold text-[#303030]">
                 Latest Collection
               </h2>
 
-              <div className="flex gap-3">
-                <button className="swiper-button-prev-custom w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full hover:bg-[#7A1F3D] hover:text-white transition cursor-pointer">
-                  <ChevronLeft size={18} />
+              <div className="flex gap-2 sm:gap-3">
+                <button className="swiper-button-prev-custom w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center border border-gray-300 rounded-full hover:bg-[#7A1F3D] hover:text-white transition cursor-pointer">
+                  <ChevronLeft size={16} className="sm:w-[18px]" />
                 </button>
 
-                <button className="swiper-button-next-custom w-10 h-10 flex items-center justify-center rounded-full bg-[#7A1F3D] text-white hover:bg-[#5E182F] transition cursor-pointer">
-                  <ChevronRight size={18} />
+                <button className="swiper-button-next-custom w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#7A1F3D] text-white hover:bg-[#5E182F] transition cursor-pointer">
+                  <ChevronRight size={16} className="sm:w-[18px]" />
                 </button>
               </div>
             </div>
 
             {/* CONTENT AREA */}
-            <div className="relative flex-1 min-h-[500px]">
+            <div className="relative flex-1 min-h-[450px] sm:min-h-[500px]">
               {loading ? (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <Loader2 className="animate-spin text-[#7A1F3D]" size={40} />
+                  <Loader2 className="animate-spin text-[#7A1F3D]" size={36} />
                 </div>
               ) : (
                 <Swiper
-                  modules={[Navigation, Autoplay]}
+                  modules={[Navigation]}
                   navigation={{
                     prevEl: ".swiper-button-prev-custom",
                     nextEl: ".swiper-button-next-custom",
                   }}
-                  spaceBetween={55}
-                  slidesPerView={1}
+                  spaceBetween={20}
+                  slidesPerView={1.2}
                   breakpoints={{
-                    640: { slidesPerView: 2 },
-                    1024: { slidesPerView: 2 },
-                    1280: { slidesPerView: 2.1 },
+                    500: { slidesPerView: 1.4, spaceBetween: 24 },
+                    768: { slidesPerView: 1.7, spaceBetween: 30 },
+                    1024: { slidesPerView: 2.05, spaceBetween: 40 },
+                    1280: { slidesPerView: 2.1, spaceBetween: 40 },
                   }}
                   className="w-full h-full pb-10"
                 >
+
                   {latestProducts.map((product) => (
                     <SwiperSlide key={product.id}>
-                      <div className="bg-white p-1.5 w-full max-w-[330px] h-auto min-h-[500px] shadow-sm hover:shadow-lg transition-all duration-300 mx-auto flex flex-col">
+                      <div className="bg-white p-1.5 w-full max-w-[550px] h-auto min-h-[420px] sm:min-h-[500px] shadow-sm hover:shadow-lg transition-all duration-300 mx-auto  flex flex-col cursor-pointer group rounded-sm border border-[#E8DDD4]">
                         {/* IMAGE */}
                         <div className="w-full h-[280px] bg-gray-50 overflow-hidden mb-6">
                           <img
                             src={`${IMAGE_BASE_URL}${product.image_path}`}
                             alt={product.name}
-                            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             onError={(e) => {
                               e.target.onerror = null;
                               // Fallback image logic matching ProductGrid
@@ -129,7 +131,7 @@ export default function LatestCollection() {
 
                         {/* CONTENT */}
                         <div className="px-2 flex flex-col flex-1">
-                          <h4 className="text-[21px] font-gt-walsheim font-medium text-[#303030] mb-2 leading-tight line-clamp-1">
+                          <h4 className="text-[21px] font-gt-walsheim font-medium text-[#303030] mb-2 leading-tight line-clamp-1 group-hover:text-[#7A1F3D] transition-colors">
                             {product.name}
                           </h4>
 
@@ -144,12 +146,12 @@ export default function LatestCollection() {
                           {/* BUTTONS */}
                           <div className="flex gap-3 mt-auto">
                             <Link href={`/product-details/${product.slug}`} className="flex-1">
-                              <button className="w-full bg-[#7A1F3D] text-white py-2.5 text-[14px] font-semibold hover:bg-[#5E182F] transition">
+                              <button className="w-full bg-[#7A1F3D] border border-[#7A1F3D] text-white py-2.5 text-[14px] font-semibold hover:bg-white hover:text-[#7A1F3D] transition-all duration-300 cursor-pointer">
                                 Shop Now
                               </button>
                             </Link>
 
-                            <button className="flex-1 border border-[#7A1F3D] text-[#7A1F3D] py-2.5 text-[14px] font-semibold hover:bg-[#7A1F3D] hover:text-white transition">
+                            <button className="flex-1 border border-[#7A1F3D] text-[#7A1F3D] py-2.5 text-[14px] font-semibold hover:bg-[#7A1F3D] hover:text-white transition-all duration-300 cursor-pointer">
                               Add to Cart
                             </button>
                           </div>
@@ -157,7 +159,7 @@ export default function LatestCollection() {
                       </div>
                     </SwiperSlide>
                   ))}
-                  
+
                   {latestProducts.length === 0 && !loading && (
                     <div className="text-center py-10 text-gray-500 w-full flex items-center justify-center">
                       No products found in the latest collection.
@@ -172,4 +174,4 @@ export default function LatestCollection() {
       </div>
     </section>
   );
-}
+} 

@@ -29,10 +29,10 @@ export default function Collections() {
       try {
         setLoading(true);
         const response = await fetch("https://shreedivyam.kdscrm.com/api/premium/products", { cache: 'no-store' });
-        
+
         if (!response.ok) throw new Error("API response not ok");
         const json = await response.json();
-        
+
         if (isMounted) {
           const data = json.data || json;
           if (Array.isArray(data)) {
@@ -63,52 +63,52 @@ export default function Collections() {
   }, []);
 
   return (
-    <section className="mx-auto max-w-[1720px] py-20 bg-[#FFF6E8] w-full h-auto overflow-hidden">
-      <div className="mx-auto max-w-[1440px] px-8 md:px-16 lg:px-24">
+    <section className="mx-auto max-w-[1720px] py-10 sm:py-16 md:py-20 bg-[#FFF6E8] w-full h-auto overflow-hidden">
+      <div className="mx-auto max-w-[1440px] px-6 sm:px-10 md:px-16 lg:px-24">
 
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-[40px] font-playfair text-[#7A1F3D] font-bold">
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="text-[24px] sm:text-[32px] md:text-[40px] font-playfair text-[#7A1F3D] font-bold">
             Premium Collections
           </h2>
         </div>
 
-        <div className="flex flex-col gap-8 md:flex-row md:justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row lg:justify-center gap-6 sm:gap-8">
           {loading ? (
-            <p className="text-center w-full text-gray-500">Loading collections... (Premium)</p>
+            <p className="text-center col-span-full py-10 text-gray-500">Loading collections... (Premium)</p>
           ) : (
             products.map((item, index) => {
               // Determine if it's a product (from the new API) or a category (fallback)
               const isProduct = !!item.image_path;
-              
+
               // Resolve the image
-              const imageUrl = isProduct 
-                ? item.image_path 
+              const imageUrl = isProduct
+                ? item.image_path
                 : (categoryImages[item.slug] || defaultImages[index % defaultImages.length]);
 
               // Resolve the link
-              const href = isProduct 
-                ? `/product-details/${item.slug}` 
+              const href = isProduct
+                ? `/product-details/${item.slug}`
                 : `/category/${item.slug}`;
 
               return (
                 <Link
                   key={item.id || index}
                   href={href}
-                  className="w-full md:w-[380px] h-auto overflow-hidden cursor-pointer shrink-0 group relative block bg-white/40 hover:bg-white/60 transition-colors duration-300"
+                  className="w-full sm:w-auto lg:w-[380px] h-auto overflow-hidden cursor-pointer shrink-0 group relative block bg-white/40 hover:bg-white/60 transition-colors duration-300 rounded-sm shadow-sm mx-auto"
                 >
-                  <div className="h-[480px] w-full overflow-hidden">
+                  <div className="aspect-[4/5] sm:aspect-[3/4] lg:h-[480px] w-full overflow-hidden">
                     <img
                       src={imageUrl}
                       alt={item.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="p-5 text-center">
-                    <h3 className="text-lg md:text-xl font-medium text-[#303030] font-playfair truncate">
+                  <div className="p-4 sm:p-5 text-center">
+                    <h3 className="text-[16px] sm:text-[18px] md:text-xl font-medium text-[#303030] font-playfair truncate">
                       {item.name}
                     </h3>
                     {(item.price || item.usd_price) && (
-                      <p className="text-[#7A1F3D] font-bold mt-2 text-xl">
+                      <p className="text-[#7A1F3D] font-bold mt-1.5 md:mt-2 text-[16px] sm:text-lg md:text-xl">
                         {formatPrice(item.price, item.usd_price)}
                       </p>
                     )}
@@ -119,7 +119,10 @@ export default function Collections() {
           )}
         </div>
 
+
       </div>
     </section>
   );
 }
+
+
