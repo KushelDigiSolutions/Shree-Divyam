@@ -35,7 +35,7 @@ export default function Hero() {
             <span className="block">Radha Krishna & Mata Rani</span>
           </p>
 
-          <button className="mt-6 md:mt-8 rounded-sm bg-[#7A1F3D] px-8 md:px-10 py-2.5 md:py-3 text-sm md:text-base font-semibold text-white hover:bg-[#5E182F] transition-all shadow-lg active:scale-95">
+          <button className="mt-6 md:mt-8 rounded-sm bg-[#7A1F3D] border border-[#7A1F3D] px-8 md:px-10 py-2.5 md:py-3 text-sm md:text-base font-semibold text-white hover:bg-white hover:text-[#7A1F3D] transition-all duration-300 shadow-lg active:scale-95 cursor-pointer">
             Shop Now
           </button>
         </div>

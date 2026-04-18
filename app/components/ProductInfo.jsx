@@ -54,12 +54,13 @@ export default function ProductInfo({
         }
 
         const params = new URLSearchParams({
-            productId: product.id,
-            variantId: variation.id,
+            productId: product.id.toString(),
+            variantId: variation.id.toString(),
             quantity: quantity.toString(),
             name: product.title,
             image: product.images?.[0] || "",
-            price: formatPrice(currentPrice, variation?.usd_price || product.usdPrice),
+            priceINR: currentPrice.toString(),
+            priceUSD: (variation?.usd_price || product.usdPrice || "").toString(),
             variantName: `${selectedSize} / ${selectedColor}`
         });
 

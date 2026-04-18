@@ -55,7 +55,7 @@ export default function ProductGrid() {
     : products;
 
   return (
-    <section className="mx-auto max-w-[1720px] bg-[#FDF8F3] py-10 sm:py-16 md:py-20">
+    <section className="mx-auto max-w-[1720px] bg-[#FDF8F3] pt-6 sm:pt-10 md:pt-12 pb-10 sm:pb-16 md:pb-20">
       <div className="max-w-[1440px] mx-auto px-6 sm:px-12 md:px-16 lg:px-24">
 
         {/* HEADER */}
@@ -131,12 +131,11 @@ export default function ProductGrid() {
                     <button 
                       onClick={() => {
                         const params = new URLSearchParams({
-                          productId: product.id,
+                          productId: product.id.toString(),
                           name: product.name,
                           image: product.image_path?.startsWith('http') ? product.image_path : `${IMAGE_BASE_URL}${product.image_path}`,
-                          price: formatPrice(product.price, product.usd_price),
-                          // We don't have variants here, so we let the cart page handles it or redirect to details
-                          // For now we'll pass a flag to tell cart page it needs to find a variant
+                          priceINR: product.price?.toString() || "",
+                          priceUSD: product.usd_price?.toString() || "",
                           needsVariant: "true",
                           slug: product.slug
                         });

@@ -4,9 +4,11 @@ import { Phone, Search, Menu, X } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { useCurrency } from "../context/CurrencyContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout, isLoggedIn } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 w-full">
@@ -34,15 +36,32 @@ export default function Header() {
               />
             </div>
             <div className="flex flex-wrap items-center gap-3 md:gap-4 text-[15px] md:text-[18px]">
-              <div className="flex items-center gap-1.5 md:gap-2 cursor-pointer">
-                <img src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856036/Mask_group_3_mw7ria.png" alt="account" className="h-4 md:h-5 w-auto" />
-                <span>Account</span>
-              </div>
+              {!isLoggedIn ? (
+                <Link href="/login" className="flex items-center gap-1.5 md:gap-2 cursor-pointer hover:text-white transition-colors">
+                  <img src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856036/Mask_group_3_mw7ria.png" alt="account" className="h-4 md:h-5 w-auto" />
+                  <span>Account</span>
+                </Link>
+              ) : (
+                <div className="group relative flex items-center gap-1.5 md:gap-2 cursor-pointer py-1">
+                  <img src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856036/Mask_group_3_mw7ria.png" alt="account" className="h-4 md:h-5 w-auto" />
+                  <span className="max-w-[100px] truncate">Hi, {typeof user === 'string' ? user : (user?.first_name || user?.name || user?.username || "User")}</span>
+                  
+                  {/* Dropdown */}
+                  <div className="absolute top-full right-0 mt-1 w-32 bg-white text-[#7A1F3D] shadow-lg rounded-sm opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[60] border border-gray-100 overflow-hidden">
+                    <button 
+                      onClick={logout}
+                      className="w-full text-left px-4 py-2 hover:bg-[#7A1F3D] hover:text-white text-[14px] font-medium transition-colors cursor-pointer"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="flex items-center gap-1.5 md:gap-2 cursor-pointer">
                 <img src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774855916/Mask_group_szptm7.png" alt="wishlist" className="h-4 md:h-5 w-auto" />
                 <span>Wishlist</span>
               </div>
-              <Link href="/cart" className="flex items-center gap-1.5 md:gap-2 cursor-pointer hover:text-white  transition-colors">
+              <Link href="/my-bag" className="flex items-center gap-1.5 md:gap-2 cursor-pointer hover:text-white  transition-colors">
                 <img src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774855916/Mask_group_2_zcgcsh.png" alt="bag" className="h-4 md:h-5 w-auto" />
                 <span>My Bag</span>
               </Link>

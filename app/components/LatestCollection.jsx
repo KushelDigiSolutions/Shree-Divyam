@@ -42,7 +42,7 @@ export default function LatestCollection() {
   }, []);
 
   return (
-    <section className="mx-auto max-w-[1720px] bg-[#F5F5F7] py-12 md:py-20">
+    <section className="mx-auto max-w-[1720px] bg-[#F5F5F7] pt-12 md:pt-20 pb-4 md:pb-8">
       <div className="max-w-[1720px] mx-auto px-6 sm:px-12 md:px-16 lg:px-24">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
 
@@ -119,7 +119,7 @@ export default function LatestCollection() {
                         {/* IMAGE */}
                         <div className="w-full h-[280px] bg-gray-50 overflow-hidden mb-6">
                           <img
-                            src={`${IMAGE_BASE_URL}${product.image_path}`}
+                            src={product.image_path?.startsWith('http') ? product.image_path : `${IMAGE_BASE_URL}${product.image_path}`}
                             alt={product.name}
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             onError={(e) => {
@@ -155,11 +155,16 @@ export default function LatestCollection() {
 
                             <button 
                               onClick={() => {
+                                const finalImage = product.image_path?.startsWith('http') 
+                                  ? product.image_path 
+                                  : `${IMAGE_BASE_URL}${product.image_path}`;
+                                  
                                 const params = new URLSearchParams({
                                   productId: product.id.toString(),
                                   name: product.name,
-                                  image: `${IMAGE_BASE_URL}${product.image_path}`,
-                                  price: formatPrice(product.price, product.usd_price),
+                                  image: finalImage,
+                                  priceINR: product.price?.toString() || "",
+                                  priceUSD: product.usd_price?.toString() || "",
                                   needsVariant: "true",
                                   slug: product.slug
                                 });

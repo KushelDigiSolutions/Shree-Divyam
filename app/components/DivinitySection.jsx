@@ -21,7 +21,7 @@ export default function DivinitySection() {
               Discover a divine collection of Laddu Gopal, Radha Krishna, and Mata Rani dresses, crafted with love and devotion. Each poshak is designed to bring elegance, tradition, and spiritual beauty to your temple, making every occasion more special and sacred.
             </p>
 
-            <button className="border border-[#FFCF5D] text-white px-8 md:px-10 py-2 sm:py-2.5 md:py-3 text-[14px] sm:text-[15px] md:text-[16px] font-gt-walsheim font-medium hover:bg-white/10 transition w-fit active:scale-95">
+            <button className="border border-white text-white px-8 md:px-10 py-2 sm:py-2.5 md:py-3 text-[14px] sm:text-[15px] md:text-[16px] font-gt-walsheim font-medium hover:bg-white hover:text-[#7A1F3D] transition-all duration-300 w-fit active:scale-95 cursor-pointer">
               Know More
             </button>
 
@@ -40,7 +40,7 @@ export default function DivinitySection() {
 
             {/* PLAY BUTTON */}
             <button className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full bg-[#7A1F3D] shadow-lg hover:scale-105 transition cursor-pointer">
-              <Play size={18} className="ml-1 text-white sm:w-[20px] md:w-[22px]" />
+              <Play size={18} fill="white" className="ml-1 text-white sm:w-[20px] md:w-[22px]" />
             </button>
 
           </div>

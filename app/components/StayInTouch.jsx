@@ -26,7 +26,7 @@ export default function StayInTouch() {
           <div className="flex items-end mt-2 md:mt-0">
             <button
               type="submit"
-              className="h-11 sm:h-12 w-full border border-[#d8b071] bg-transparent text-[14px] font-medium text-white transition hover:bg-white/10 hover:border-white cursor-pointer active:scale-95"
+              className="h-11 sm:h-12 w-full border border-white bg-transparent text-[14px] font-medium text-white transition-all duration-300 hover:bg-white hover:text-[#7A1F3D] cursor-pointer active:scale-95 rounded-sm"
             >
               Submit
             </button>

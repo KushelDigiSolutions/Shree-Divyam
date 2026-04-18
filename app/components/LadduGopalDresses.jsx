@@ -134,10 +134,11 @@ export default function LadduGopalDresses() {
                     <button 
                       onClick={() => {
                         const params = new URLSearchParams({
-                          productId: dress.id,
+                          productId: dress.id.toString(),
                           name: dress.name,
                           image: dress.image_path?.startsWith('http') ? dress.image_path : `${IMAGE_BASE_URL}${dress.image_path}`,
-                          price: formatPrice(dress.price, dress.usd_price),
+                          priceINR: dress.price?.toString() || "",
+                          priceUSD: dress.usd_price?.toString() || "",
                           needsVariant: "true",
                           slug: dress.slug
                         });
@@ -158,9 +159,11 @@ export default function LadduGopalDresses() {
         <div className="mt-8 md:mt-10 text-center">
           <Link
             href="/category/laddu-gopal"
-            className="text-[16px] sm:text-[18px] md:text-[20px] font-semibold font-playfair text-[#7A1F3D] hover:underline"
+            className="inline-flex"
           >
-            View All
+            <button className="bg-white border border-[#7A1F3D] text-[#7A1F3D] px-8 py-2.5 text-[15px] font-medium font-playfair hover:bg-[#7A1F3D] hover:text-white transition-all duration-300 cursor-pointer rounded-sm shadow-sm">
+              View All
+            </button>
           </Link>
         </div>
       </div>

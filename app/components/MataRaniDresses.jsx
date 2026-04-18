@@ -134,7 +134,8 @@ export default function MataRaniDresses() {
                               productId: product.id.toString(),
                               name: product.name,
                               image: product.image_path?.startsWith('http') ? product.image_path : `${IMAGE_BASE_URL}${product.image_path}`,
-                              price: formatPrice(product.price, product.usd_price),
+                              priceINR: product.price?.toString() || "",
+                              priceUSD: product.usd_price?.toString() || "",
                               needsVariant: "true",
                               slug: product.slug
                             });
@@ -168,7 +169,7 @@ export default function MataRaniDresses() {
               </h3>
 
               <Link href="/category/mata-rani">
-                <button className="mt-4 inline-flex items-center gap-2 bg-white px-5 py-2.5 text-[14px] sm:text-[15px] font-medium text-[#1F1F1F] transition hover:bg-[#F3F3F3]">
+                <button className="mt-4 inline-flex items-center gap-2 bg-white border border-[#7A1F3D] px-6 py-2.5 text-[14px] sm:text-[15px] font-medium text-[#7A1F3D] transition-all duration-300 hover:bg-[#7A1F3D] hover:text-white cursor-pointer rounded-sm shadow-sm">
                   View All
                   <ArrowRight size={16} />
                 </button>
