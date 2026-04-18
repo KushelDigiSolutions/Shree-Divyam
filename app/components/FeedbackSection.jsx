@@ -44,35 +44,40 @@ function QuoteIcon() {
 
 export default function FeedbackSection() {
   return (
-    <section className="mx-auto max-w-[1720px] bg-[#FFFFFF] py-14 sm:py-16 md:py-20 lg:py-[88px]">
-      <div className="mx-auto max-w-[1440px] px-8 md:px-16 lg:px-24">
-        <div className="mb-10 text-center sm:mb-12 md:mb-14">
-          <h2 className="font-serif text-[40px]  font-playfair   font-semibold leading-none text-[#303030] sm:text-[38px] md:text-[46px]">
+    <section className="mx-auto max-w-[1720px] bg-[#FFFFFF] pt-10 sm:pt-16 md:pt-20 lg:pt-[88px] pb-8 sm:pb-10 md:pb-12 lg:pb-[56px]">
+      <div className="mx-auto max-w-[1440px] px-6 sm:px-10 md:px-16 lg:px-24">
+        <div className="mb-8 text-center sm:mb-12 md:mb-14">
+          <h2 className="font-serif text-[24px] sm:text-[34px] md:text-[40px] lg:text-[46px] font-playfair font-semibold leading-tight text-[#303030]">
             Customer Feedback
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 transition-all duration-300">
           {feedback.map((item, index) => (
             <article
               key={index}
-              className="rounded-[28px] border border-[#EDEDED] bg-white px-5 py-6  sm:px-6 sm:py-7 md:px-7 md:py-8"
+              className="rounded-[20px] sm:rounded-[28px] border border-[#EDEDED] bg-white px-5 py-6 sm:px-6 sm:py-7 md:px-7 md:py-8 shadow-sm hover:shadow-md transition-all group"
             >
-              <div className="mb-4  ">
-                <QuoteIcon />
+              <div className="mb-4">
+                <img 
+                  src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1776164709/Customer%20Feedback.png" 
+                  alt="Quote Icon" 
+                  className="h-[28px] sm:h-[32px] w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+                />
               </div>
 
-              <p className="w-full lg:max-w-[295px] text-[15px] leading-[1.55]  font-medium font-gt-walsheim text-gray-900 sm:text-[14px]">
+              <p className="w-full text-[14px] sm:text-[15px] leading-relaxed font-medium font-gt-walsheim text-gray-700">
                 {item.quote}
               </p>
 
-              <div className="my-5 h-px w-full font-gt-walsheim bg-[#E8E8E8]" />
+              <div className="my-5 h-px w-full bg-[#F0F0F0]" />
 
-              <div>
-                <h3 className="text-[18px] font-medium leading-none text-[#1E1E2D] sm:text-[19px]">
+              <div className="flex flex-col">
+                <h3 className="text-[17px] sm:text-[18px] font-semibold leading-none text-[#1E1E2D]">
                   {item.name}
                 </h3>
-                <p className="mt-2 text-[14px] leading-none text-[#9A9A9A] sm:text-[15px]">
+                <p className="mt-2 text-[13px] sm:text-[14px] leading-none text-[#9A9A9A]">
                   {item.location}
                 </p>
               </div>

@@ -4,6 +4,7 @@ import StayInTouch from "../../components/StayInTouch";
 import ProductCard from "../../components/ProductCard";
 import ProductContainer from "../../components/ProductContainer";
 import ProductInfo from "../../components/ProductInfo";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function ProductDetailsPage({ params }) {
@@ -124,18 +125,25 @@ export default async function ProductDetailsPage({ params }) {
     <main className="bg-[#FFFFFF] text-[#2f2a28]">
       <Header />
 
-      <section className="mx-auto max-w-[1440px] h-auto min-h-[800px] px-4 sm:px-8 md:px-16 lg:px-24 py-8">
+      <section className="mx-auto max-w-[1440px] h-auto min-h-[400px] px-6 sm:px-10 md:px-16 lg:px-24 py-6 md:py-8">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-[13px] sm:text-[14px] text-[#8C8C8C] mb-8 font-gt-walsheim overflow-hidden">
+          <Link href="/" className="hover:text-[#7A1F3D] transition-colors cursor-pointer shrink-0">Home</Link>
+          <span className="shrink-0">/</span>
+          <span className="text-[#303030] font-medium truncate">{product.title}</span>
+        </div>
+        
         <ProductContainer product={product} />
       </section>
 
       {relatedProducts.length > 0 && (
-        <section className="bg-[#efe6d6] py-12">
-          <div className="mx-auto max-w-[1220px] px-4 sm:px-6 lg:px-8">
-            <h2 className="mb-8 text-center text-[34px] font-medium text-[#4a3b33]">
+        <section className="bg-[#efe6d6] py-12 md:py-16">
+          <div className="mx-auto max-w-[1440px] px-6 sm:px-10 md:px-16 lg:px-24">
+            <h2 className="mb-10 text-center text-[28px] sm:text-[34px] font-playfair font-medium text-[#4a3b33]">
               People Also Bought
             </h2>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {relatedProducts.map((item) => (
                 <ProductCard key={item.id} product={item} />
               ))}
