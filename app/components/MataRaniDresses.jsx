@@ -169,9 +169,10 @@ export default function MataRaniDresses() {
               </h3>
 
               <Link href="/category/mata-rani">
-                <button className="mt-4 inline-flex items-center gap-2 bg-white border border-[#7A1F3D] px-6 py-2.5 text-[14px] sm:text-[15px] font-medium text-[#7A1F3D] transition-all duration-300 hover:bg-[#7A1F3D] hover:text-white cursor-pointer rounded-sm shadow-sm">
+                <button className="mt-4 inline-flex items-center gap-2 bg-white px-6 py-2.5 text-[14px] sm:text-[15px] font-medium text-[#000000] transition-all duration-300  cursor-pointer rounded-sm shadow-sm">
                   View All
                   <ArrowRight size={16} />
+
                 </button>
               </Link>
             </div>

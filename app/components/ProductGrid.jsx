@@ -89,8 +89,8 @@ export default function ProductGrid() {
         >
 
           {displayProducts.map((product, index) => (
-            <SwiperSlide key={`${product.id}-${index}`}>
-              <div className="bg-white w-full max-w-[400px] h-full min-h-[420px] sm:min-h-[545px] shadow-sm hover:shadow-md transition overflow-hidden flex flex-col mx-auto cursor-pointer group rounded-sm border border-[#E8DDD4]">
+            <SwiperSlide key={`${product.id}-${index}`} className="!h-auto flex">
+              <div className="bg-white w-full max-w-[400px] min-h-[480px] sm:min-h-[600px] flex flex-col shadow-sm hover:shadow-md transition overflow-hidden mx-auto cursor-pointer group rounded-sm border border-[#E8DDD4] flex-1">
 
                 {/* IMAGE */}
                 <div className="w-full aspect-[1/1] bg-[#FDF8F3] overflow-hidden">
@@ -108,10 +108,10 @@ export default function ProductGrid() {
 
                 {/* CONTENT */}
                 <div className="p-4 md:p-6 flex flex-col flex-1">
-                  <h4 className="text-[16px] md:text-[21px] font-medium text-[#303030] mb-0.5 md:mb-2 line-clamp-1 group-hover:text-[#7A1F3D] transition-colors">
+                  <h4 className="text-[16px] md:text-[21px] font-medium text-[#303030] mb-0.5 md:mb-2 line-clamp-1 group-hover:text-[#7A1F3D] transition-colors min-h-[1.5em]">
                     {product.name}
                   </h4>
-                  <p className="text-[12px] md:text-[14px] text-gray-600 mb-2 md:mb-4 line-clamp-2">
+                  <p className="text-[12px] md:text-[14px] text-gray-600 mb-2 md:mb-4 line-clamp-2 min-h-[3em] md:min-h-[3.5em]">
                     {product.short_description}
                   </p>
                   <p className="text-[18px] md:text-[24px] font-bold text-[#7A1F3D] mb-3 md:mb-5">
@@ -125,7 +125,7 @@ export default function ProductGrid() {
                         Shop Now
                       </button>
                     </Link>
-                    <button 
+                    <button
                       onClick={() => {
                         const params = new URLSearchParams({
                           productId: product.id.toString(),
