@@ -28,14 +28,15 @@ export default function DivinitySection() {
           </div>
 
           {/* RIGHT IMAGE */}
-          <div className="relative w-full max-w-[500px] sm:max-w-[600px] mx-auto lg:max-w-none lg:mx-0">
-
-            <div className="rounded-[16px] sm:rounded-[28px] overflow-hidden shadow-2xl">
+          <div className="relative w-full max-w-[500px] sm:max-w-[600px] mx-auto lg:max-w-none lg:mx-0 group">
+            <div className="rounded-[16px] sm:rounded-[28px] overflow-hidden shadow-2xl relative">
               <img
                 src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774937581/Celebrate%20Divinity%20with%20Beautiful%20Poshak.png"
                 alt="Divinity"
-                className="w-full h-full object-cover aspect-[4/3] sm:aspect-auto"
+                className="w-full h-full object-cover aspect-[4/3] sm:aspect-auto transition-transform duration-500 group-hover:scale-105"
               />
+              {/* Full-coverage hover overlay */}
+              <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
             </div>
 
             {/* PLAY BUTTON */}

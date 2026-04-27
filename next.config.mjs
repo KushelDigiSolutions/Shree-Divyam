@@ -12,6 +12,10 @@ const nextConfig = {
         source: "/api/proxy/:path*",
         destination: "https://shreedivyam.kdscrm.com/api/:path*",
       },
+      {
+        source: "/reset-password/:token",
+        destination: "/reset-password?token=:token",
+      },
     ];
   },
 };

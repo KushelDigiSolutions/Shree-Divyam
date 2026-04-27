@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { useCurrency } from "../context/CurrencyContext";
 import DirectAddToCart from "./DirectAddToCart";
@@ -6,40 +8,41 @@ export default function ProductCard({ product }) {
   const { formatPrice } = useCurrency();
 
   return (
-    <div className="border border-[#d9cfbf] bg-white p-2.5 sm:p-4 cursor-pointer group rounded-sm shadow-sm h-full flex flex-col">
-      <div className="relative aspect-[1/1] w-full overflow-hidden bg-gray-50 rounded-sm">
-        <Image
-          src={product.image}
-          alt={product.title}
-          fill
-          className="object-contain p-1 transition-transform duration-500 group-hover:scale-105"
-        />
+    <div className="overflow-hidden bg-white ring-1 ring-[#EFEAE4] h-full flex flex-col cursor-pointer group rounded-sm shadow-sm transition-all duration-300 hover:shadow-md">
+      <div className="p-[8px] sm:p-[10px] pb-0">
+        <div className="relative aspect-[1/1] w-full overflow-hidden bg-white rounded-sm">
+          <Image
+            src={product.image || "https://placehold.co/400x400?text=No+Image"}
+            alt={product.title}
+            fill
+            className="object-contain p-1 transition-transform duration-700 group-hover:scale-105"
+            unoptimized={true}
+          />
+        </div>
       </div>
 
-      <div className="pt-2 sm:pt-4 flex flex-col flex-1">
-        <h3 className="text-[14px] sm:text-[16px] font-medium leading-tight text-[#433730] group-hover:text-[#8a1d45] transition-colors line-clamp-1">
+      <div className="px-4 pb-4 pt-3 sm:px-5 sm:pb-5 flex flex-col flex-1">
+        <h3 className="text-[16px] sm:text-[19px] md:text-[21px] font-medium leading-[1.25] font-gt-walsheim text-[#303030] group-hover:text-[#7A1F3D] transition-colors line-clamp-1 min-h-[1.25em]">
           {product.title}
         </h3>
 
-        <p className="mt-0.5 text-[10px] sm:text-[11px] text-[#8c8177] line-clamp-1">{product.description}</p>
+        <div className="min-h-[2.9em] mt-1">
+          <p className="text-[12px] sm:text-[14px] leading-[1.45] font-gt-walsheim text-gray-600 line-clamp-2">
+            {product.description}
+          </p>
+        </div>
 
-        <p className="mt-1 sm:mt-2 text-[15px] sm:text-[18px] font-bold text-[#7A1F3D]">
+        <p className="mt-2 text-[18px] sm:text-[22px] md:text-[24px] font-bold font-gt-walsheim text-[#7A1F3D]">
           {formatPrice(product.price, product.usdPrice)}
         </p>
 
-        <div className="mt-3 sm:mt-4 grid grid-cols-2 gap-1.5 sm:gap-3 mt-auto relative z-10">
+        <div className="mt-auto pt-4 grid grid-cols-2 gap-2 sm:gap-3 relative z-20">
           <button 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              // Link to product details
-              window.location.href = `/product-details/${product.slug}`;
-            }}
-            className="bg-[#7A1F3D] border border-[#7A1F3D] py-1.5 sm:py-2 text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-white cursor-pointer hover:bg-white hover:text-[#7A1F3D] transition-all duration-300 active:scale-95"
+            className="w-full h-[40px] flex items-center justify-center border border-[#7A1F3D] bg-[#7A1F3D] text-[13px] md:text-[14px] font-gt-walsheim font-medium text-white transition-all duration-300 hover:bg-white hover:text-[#7A1F3D] cursor-pointer"
           >
-            Buy Now
+            Shop Now
           </button>
-          <DirectAddToCart product={product} className="!py-1.5 sm:!py-2 !text-[9px] sm:!text-[11px] !font-bold !uppercase !tracking-wider" />
+          <DirectAddToCart product={product} className="!h-[40px] !text-[13px] md:!text-[14px]" />
         </div>
       </div>
     </div>

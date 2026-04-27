@@ -966,9 +966,6 @@ export default function MyBagPage() {
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 mb-1">
                                                     <h3 className="text-sm sm:text-base font-semibold text-[#303030] truncate">{productName}</h3>
-                                                    <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-tighter ${itemId.toString().startsWith('index-') ? "bg-red-50 text-red-400 border border-red-100" : "bg-gray-100 text-gray-400 border border-gray-200"}`}>
-                                                        ID: {itemId}
-                                                    </span>
                                                 </div>
                                                 {variantInfo && (
                                                     <p className="text-[11px] text-gray-400 mb-2 uppercase tracking-wider font-medium">{variantInfo}</p>
@@ -1029,10 +1026,6 @@ export default function MyBagPage() {
                                                             Remove
                                                         </button>
                                                     </div>
-
-                                                    {isAtMaxStock && maxStock !== Infinity && (
-                                                        <span className="text-[10px] text-red-500 font-medium">Max stock reached ({maxStock})</span>
-                                                    )}
                                                 </div>
                                             </div>
 

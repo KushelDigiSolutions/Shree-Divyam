@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Loader2, User, Lock, Eye, EyeOff, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Loader2, User, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, X } from "lucide-react";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -17,13 +17,15 @@ export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [status, setStatus] = useState({ type: "", message: "" });
-    const [formData, setFormData] = useState({ username: "", password: "" });
-    const [errors, setErrors] = useState({ username: "", password: "" });
+    const [formData, setFormData] = useState({ email: "", password: "" });
+    const [errors, setErrors] = useState({ email: "", password: "" });
 
     const validateField = (name, value) => {
         let error = "";
         if (!value.trim()) {
             error = `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
+        } else if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            error = "Please enter a valid email address";
         } else if (name === "password" && value.length < 6) {
             error = "Password must be at least 6 characters";
         }
@@ -49,12 +51,12 @@ export default function LoginPage() {
         e.preventDefault();
 
         // Final validation check before submission
-        const usernameError = validateField("username", formData.username);
+        const emailError = validateField("email", formData.email);
         const passwordError = validateField("password", formData.password);
 
-        if (usernameError || passwordError) {
+        if (emailError || passwordError) {
             setErrors({
-                username: usernameError,
+                email: emailError,
                 password: passwordError
             });
             return;
@@ -159,13 +161,13 @@ export default function LoginPage() {
                     }
                 }
 
-                // Final fallback — use username as identifier if backend truly doesn't return an ID
+                // Final fallback — use email as identifier if backend doesn't return an ID
                 if (!userObj.id && !userObj.user_id) {
-                    console.warn("⚠️ API did not return a user ID. Using username as fallback.");
-                    userObj.username = formData.username;
+                    console.warn("⚠️ API did not return a user ID. Using email as fallback.");
+                    userObj.email = formData.email;
                 }
 
-                const userToStore = (userObj && typeof userObj === 'object' && Object.keys(userObj).length > 0) ? userObj : { username: formData.username };
+                const userToStore = (userObj && typeof userObj === 'object' && Object.keys(userObj).length > 0) ? userObj : { email: formData.email };
                 login(userToStore, token);
 
                 // --- GUEST CART MIGRATION START ---
@@ -210,7 +212,7 @@ export default function LoginPage() {
                 setStatus({ type: "success", message: "Login successful!" });
                 setTimeout(() => router.push(callback), 1500);
             } else {
-                setStatus({ type: "error", message: data.message || data.error || "Invalid username or password." });
+                setStatus({ type: "error", message: data.message || data.error || "Invalid email or password." });
             }
         } catch (error) {
             console.error("Login Error:", error);
@@ -241,22 +243,31 @@ export default function LoginPage() {
 
                     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
                         <div className="space-y-2">
-                            <label className="text-[11px] uppercase tracking-[0.2em] font-bold text-gray-400">Username</label>
+                            <label className="text-[11px] uppercase tracking-[0.2em] font-bold text-gray-400">Email Address</label>
                             <div className="relative group">
-                                <User className={`absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors duration-300 ${errors.username ? "text-red-400" : "text-gray-400 group-focus-within:text-[#7A1F3D]"}`} size={16} />
+                                <User className={`absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors duration-300 ${errors.email ? "text-red-400" : "text-gray-400 group-focus-within:text-[#7A1F3D]"}`} size={16} />
                                 <input
-                                    type="text"
-                                    name="username"
-                                    value={formData.username}
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
                                     onChange={handleInputChange}
                                     onBlur={handleBlur}
-                                    placeholder="Enter your username"
-                                    className={`w-full pl-10 pr-4 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.username ? "border-red-300 bg-red-50/20 focus:border-red-500 focus:ring-1 focus:ring-red-100" : "border-gray-200 focus:border-[#7A1F3D] focus:shadow-sm"} text-gray-800`}
+                                    placeholder="Enter your email address"
+                                    className={`w-full pl-10 pr-10 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.email ? "border-red-300 bg-red-50/20 focus:border-red-500 focus:ring-1 focus:ring-red-100" : "border-gray-200 focus:border-[#7A1F3D] focus:shadow-sm"} text-gray-800`}
                                 />
+                                {formData.email && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({ ...prev, email: "" }))}
+                                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors p-1"
+                                    >
+                                        <X size={14} />
+                                    </button>
+                                )}
                             </div>
-                            {errors.username && (
+                            {errors.email && (
                                 <p className="text-[11px] text-red-600 font-medium flex items-center gap-1.5 mt-1.5 animate-in slide-in-from-top-1">
-                                    <AlertCircle size={12} /> {errors.username}
+                                    <AlertCircle size={12} /> {errors.email}
                                 </p>
                             )}
                         </div>
@@ -264,7 +275,7 @@ export default function LoginPage() {
                         <div className="space-y-2">
                             <div className="flex justify-between items-center">
                                 <label className="text-[11px] uppercase tracking-[0.2em] font-bold text-gray-400">Password</label>
-                                <a href="#" className="text-[11px] text-[#7A1F3D] hover:underline font-bold uppercase tracking-wider">Forgot?</a>
+                                <Link href="/forgot-password" className="text-[11px] text-[#7A1F3D] hover:underline font-bold uppercase tracking-wider">Forgot Password?</Link>
                             </div>
                             <div className="relative group">
                                 <Lock className={`absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors duration-300 ${errors.password ? "text-red-400" : "text-gray-400 group-focus-within:text-[#7A1F3D]"}`} size={16} />
@@ -275,7 +286,7 @@ export default function LoginPage() {
                                     onChange={handleInputChange}
                                     onBlur={handleBlur}
                                     placeholder="••••••••"
-                                    className={`w-full pl-10 pr-12 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.password ? "border-red-300 bg-red-50/20 focus:border-red-500 focus:ring-1 focus:ring-red-100" : "border-gray-200 focus:border-[#7A1F3D] focus:shadow-sm"} text-gray-800`}
+                                    className={`w-full pl-10 pr-10 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.password ? "border-red-300 bg-red-50/20 focus:border-red-500 focus:ring-1 focus:ring-red-100" : "border-gray-200 focus:border-[#7A1F3D] focus:shadow-sm"} text-gray-800`}
                                 />
                                 <button
                                     type="button"

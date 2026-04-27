@@ -35,7 +35,13 @@ export default function ProductInfo({
     };
 
     const increment = () => {
-        setQuantity(quantity + 1);
+        const stockQty = Number(variation?.quantity || variation?.stock || 1);
+        if (quantity < stockQty) {
+            setQuantity(quantity + 1);
+        } else {
+            setMessage({ type: "error", text: `Only ${stockQty} item(s) available in stock` });
+            setTimeout(() => setMessage({ type: "", text: "" }), 3000);
+        }
     };
 
     const { formatPrice, currency } = useCurrency();
@@ -54,14 +60,29 @@ export default function ProductInfo({
     // Check if product is already in cart on mount & listen for updates
     useEffect(() => {
         const checkCart = () => {
-            const { quantity: qty, variantId } = getCartItemQuantity(product);
-            setCartQty(qty);
-            if (variantId) setActiveVariantId(variantId);
+            const { quantity: qty, variantId } = getCartItemQuantity(product, variation?.id);
+            
+            // Re-verify if the found variant matches our currently selected one
+            const currentVariantId = String(variation?.id || "");
+            if (String(variantId) === currentVariantId) {
+                setCartQty(qty);
+                setActiveVariantId(variantId);
+            } else {
+                setCartQty(0);
+                setActiveVariantId(null);
+            }
         };
         checkCart();
         window.addEventListener("cartUpdated", checkCart);
         return () => window.removeEventListener("cartUpdated", checkCart);
-    }, [product.id, product.slug]);
+    }, [product.id, product.slug, selectedColor, selectedSize, variation?.id]);
+
+    // Handle color selection - Reset quantity to 1 as requested
+    const handleColorChange = (newColor) => {
+        setSelectedColor(newColor);
+        setQuantity(1);
+        setMessage({ type: "", text: "" });
+    };
 
     const handleAddToCart = async () => {
         if (!variation || !variation.id) {
@@ -93,6 +114,16 @@ export default function ProductInfo({
 
     const handleCartQtyChange = async (newQty) => {
         if (isUpdating) return;
+        
+        const stockQty = Number(variation?.quantity || variation?.stock || 1);
+        
+        // Check if new quantity exceeds stock
+        if (newQty > 0 && newQty > stockQty) {
+            setMessage({ type: "error", text: `Only ${stockQty} item(s) available in stock` });
+            setTimeout(() => setMessage({ type: "", text: "" }), 3000);
+            return;
+        }
+
         setIsUpdating(true);
 
         if (newQty <= 0) {
@@ -138,7 +169,7 @@ export default function ProductInfo({
                         </div>
                         <button
                             onClick={() => handleCartQtyChange(cartQty + 1)}
-                            disabled={isUpdating}
+                            disabled={isUpdating || cartQty >= (Number(variation?.quantity || variation?.stock || 1))}
                             className="flex h-full w-14 items-center justify-center text-[#7A1F3D] hover:bg-[#7A1F3D] hover:text-white transition cursor-pointer disabled:opacity-50"
                         >
                             <Plus size={18} />
@@ -208,7 +239,10 @@ export default function ProductInfo({
                     {product.sizes.map((size) => (
                         <button
                             key={size}
-                            onClick={() => setSelectedSize(size)}
+                            onClick={() => {
+                                setSelectedSize(size);
+                                setQuantity(1);
+                            }}
                             className={`flex h-[36px] min-w-[36px] sm:h-[42px] sm:min-w-[42px] px-2.5 sm:px-3 items-center font-medium justify-center border transition cursor-pointer rounded-sm text-[13px] sm:text-base ${selectedSize === size
                                 ? "border-[#7A1F3D] bg-[#7A1F3D] text-white shadow-sm"
                                 : "border-gray-200 bg-white text-[#303030] hover:border-[#7A1F3D]"
@@ -236,7 +270,8 @@ export default function ProductInfo({
                         </div>
                         <button
                             onClick={increment}
-                            className="flex h-full w-9 sm:w-10 items-center justify-center text-[#303030] hover:bg-gray-50 transition cursor-pointer text-base sm:text-lg"
+                            disabled={quantity >= (Number(variation?.quantity || variation?.stock || 1))}
+                            className="flex h-full w-9 sm:w-10 items-center justify-center text-[#303030] hover:bg-gray-50 transition cursor-pointer text-base sm:text-lg disabled:opacity-50"
                         >
                             +
                         </button>
@@ -250,7 +285,7 @@ export default function ProductInfo({
                     {product.colors.map((color) => (
                         <button
                             key={color}
-                            onClick={() => setSelectedColor(color)}
+                            onClick={() => handleColorChange(color)}
                             className={`h-[30px] w-[30px] sm:h-[36px] sm:w-[36px] rounded-full border-2 transition-all cursor-pointer shadow-sm ${selectedColor === color ? "border-[#7A1F3D] p-0.5" : "border-transparent"
                                 }`}
                         >

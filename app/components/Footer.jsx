@@ -45,7 +45,7 @@ export default function Footer() {
 
           {/* Useful Links */}
           <div className="sm:pl-4">
-            <h3 className="text-[17px] sm:text-[18px] font-bold text-[#202033] font-playfair uppercase tracking-wide">
+            <h3 className="text-[17px] sm:text-[18px] font-medium text-[#09061B] font-gt-walsheim  ">
               Useful Links
             </h3>
             <ul className="mt-5 space-y-4 text-[14px] sm:text-[15px] md:text-[16px] text-gray-600">
@@ -66,7 +66,7 @@ export default function Footer() {
 
           {/* Categories */}
           <div className="sm:pl-4">
-            <h3 className="text-[17px] sm:text-[18px] font-bold text-[#202033] font-playfair uppercase tracking-wide">
+            <h3 className="text-[17px] sm:text-[18px] font-medium text-[#09061B] font-gt-walsheim ">
               Categories
             </h3>
             <ul className="mt-5 space-y-4 text-[14px] sm:text-[15px] md:text-[16px] text-gray-600">
@@ -84,7 +84,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div className="max-w-[290px]">
-            <h3 className="text-[17px] sm:text-[18px] font-bold text-[#202033] font-playfair uppercase tracking-wide">
+            <h3 className="text-[17px] sm:text-[18px] font-medium text-[#09061B] font-gt-walsheim ">
               Contact Info
             </h3>
 
@@ -92,10 +92,10 @@ export default function Footer() {
               Our Support team is here to assist you
             </p>
 
-            <div className="mt-6 space-y-5 text-[14px] sm:text-[15px] md:text-[16px] text-gray-700">
+            <div className="mt-6 space-y-5 text-[14px] sm:text-[15px] md:text-[16px] text-gray-700 font-gt-walsheim">
               <div className="flex items-center gap-4 cursor-pointer hover:text-[#8B1E4D] transition group">
                 <FiMail className="shrink-0 text-[18px] sm:text-[20px] text-[#8B1E4D] group-hover:scale-110 transition-transform" />
-                <span>info@SriDivyam.com</span>
+                <span>info@ShriDivyam.com</span>
               </div>
 
               <div className="flex items-center gap-4 cursor-pointer hover:text-[#8B1E4D] transition group">
@@ -116,8 +116,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 md:mt-16 flex flex-col gap-6 border-t border-gray-200 pt-8 text-[13px] sm:text-[14px] md:text-[15px] text-gray-500 md:flex-row md:items-center md:justify-between text-center md:text-left">
-          <p>© 2026 Sri Divyam. All right Reserved</p>
+        <div className="mt-12 md:mt-16 flex flex-col gap-6 pt-8 text-[13px] sm:text-[14px] md:text-[15px] text-gray-500 md:flex-row md:items-center md:justify-between text-center md:text-left">
+          <p>© 2026 Shri Divyam. All right Reserved</p>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-10 justify-center">
             <a href="#" className="transition hover:text-[#8B1E4D] cursor-pointer">

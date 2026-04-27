@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Loader2, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, User, Phone, MapPin } from "lucide-react";
+import { Loader2, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, User, Phone, MapPin, X } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
+import { RxCross2 } from "react-icons/rx";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -103,7 +104,7 @@ export default function RegisterPage() {
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
-            setStatus({ type: "error", message: "Please fix the errors in the form." });
+            setStatus({ type: "error", message: "Please fill in all required fields." });
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
@@ -125,13 +126,13 @@ export default function RegisterPage() {
 
             // Stricter check for errors based on the response you provided
             // data.status is false (boolean) and data.status_code is 400
-            const isError = !response.ok || 
-                            data.status === false || 
-                            data.status === "error" || 
-                            data.success === false || 
-                            data.status_code >= 400 ||
-                            (data.message && typeof data.message === 'object' && !Array.isArray(data.message)) ||
-                            (data.errors);
+            const isError = !response.ok ||
+                data.status === false ||
+                data.status === "error" ||
+                data.success === false ||
+                data.status_code >= 400 ||
+                (data.message && typeof data.message === 'object' && !Array.isArray(data.message)) ||
+                (data.errors);
 
             if (!isError) {
                 setStatus({ type: "success", message: "Registration successful! Redirecting to login..." });
@@ -139,17 +140,17 @@ export default function RegisterPage() {
             } else {
                 // Extract the best error message possible from the object structure you showed
                 let errorMsg = "Registration failed. Please try again.";
-                
+
                 if (typeof data.message === 'string') {
                     errorMsg = data.message;
                 } else if (data.message && typeof data.message === 'object') {
                     // Combine all errors from the object (e.g., email and username)
-                    const errorLines = Object.values(data.message).map(val => 
+                    const errorLines = Object.values(data.message).map(val =>
                         Array.isArray(val) ? val[0] : String(val)
                     );
                     errorMsg = errorLines.join(" ");
                 } else if (data.errors) {
-                    const errorLines = Object.values(data.errors).map(val => 
+                    const errorLines = Object.values(data.errors).map(val =>
                         Array.isArray(val) ? val[0] : String(val)
                     );
                     errorMsg = errorLines.join(" ");
@@ -198,14 +199,23 @@ export default function RegisterPage() {
                                         value={formData.first_name}
                                         onChange={handleInputChange}
                                         onBlur={handleBlur}
-                                        onKeyDown={(e) => {
-                                            if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                                e.preventDefault();
-                                            }
-                                        }}
+                                        // onKeyDown={(e) => {
+                                        //     if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                                        //         e.preventDefault();
+                                        //     }
+                                        // }}
                                         placeholder="First Name"
-                                        className={`w-full pl-10 pr-4 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.first_name ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
+                                        className={`w-full pl-10 pr-10 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.first_name ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
                                     />
+                                    {formData.first_name && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData(prev => ({ ...prev, first_name: "" }))}
+                                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors p-1"
+                                        >
+                                            <RxCross2  size={14} />
+                                        </button>
+                                    )}
                                 </div>
                                 {errors.first_name && <p className="text-[11px] text-red-600 font-medium mt-1 animate-in slide-in-from-top-1">{errors.first_name}</p>}
                             </div>
@@ -221,14 +231,23 @@ export default function RegisterPage() {
                                         value={formData.last_name}
                                         onChange={handleInputChange}
                                         onBlur={handleBlur}
-                                        onKeyDown={(e) => {
-                                            if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                                e.preventDefault();
-                                            }
-                                        }}
+                                        // onKeyDown={(e) => {
+                                        //     if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                                        //         e.preventDefault();
+                                        //     }
+                                        // }}
                                         placeholder="Last Name"
-                                        className={`w-full pl-10 pr-4 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.last_name ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
+                                        className={`w-full pl-10 pr-10 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.last_name ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
                                     />
+                                    {formData.last_name && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData(prev => ({ ...prev, last_name: "" }))}
+                                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors p-1"
+                                        >
+                                            <RxCross2  size={14} />
+                                        </button>
+                                    )}
                                 </div>
                                 {errors.last_name && <p className="text-[11px] text-red-600 font-medium mt-1 animate-in slide-in-from-top-1">{errors.last_name}</p>}
                             </div>
@@ -245,8 +264,17 @@ export default function RegisterPage() {
                                         onChange={handleInputChange}
                                         onBlur={handleBlur}
                                         placeholder="Username"
-                                        className={`w-full pl-10 pr-4 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.username ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
+                                        className={`w-full pl-10 pr-10 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.username ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
                                     />
+                                    {formData.username && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData(prev => ({ ...prev, username: "" }))}
+                                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors p-1"
+                                        >
+                                            <RxCross2  size={14} />
+                                        </button>
+                                    )}
                                 </div>
                                 {errors.username && <p className="text-[11px] text-red-600 font-medium mt-1 animate-in slide-in-from-top-1">{errors.username}</p>}
                             </div>
@@ -263,8 +291,17 @@ export default function RegisterPage() {
                                         onChange={handleInputChange}
                                         onBlur={handleBlur}
                                         placeholder="Email Address"
-                                        className={`w-full pl-10 pr-4 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.email ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
+                                        className={`w-full pl-10 pr-10 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.email ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
                                     />
+                                    {formData.email && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData(prev => ({ ...prev, email: "" }))}
+                                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors p-1"
+                                        >
+                                            <RxCross2  size={14} />
+                                        </button>
+                                    )}
                                 </div>
                                 {errors.email && <p className="text-[11px] text-red-600 font-medium mt-1 animate-in slide-in-from-top-1">{errors.email}</p>}
                             </div>
@@ -280,16 +317,25 @@ export default function RegisterPage() {
                                         value={formData.mobile_number}
                                         onChange={handleInputChange}
                                         onBlur={handleBlur}
-                                        onKeyDown={(e) => {
-                                            if (!/^[0-9]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                                e.preventDefault();
-                                            }
-                                        }}
+                                        // onKeyDown={(e) => {
+                                        //     if (!/^[0-9]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Delete" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                                        //         e.preventDefault();
+                                        //     }
+                                        // }}
                                         inputMode="numeric"
                                         maxLength={10}
                                         placeholder="10-digit number"
-                                        className={`w-full pl-10 pr-4 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.mobile_number ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
+                                        className={`w-full pl-10 pr-10 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.mobile_number ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
                                     />
+                                    {formData.mobile_number && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData(prev => ({ ...prev, mobile_number: "" }))}
+                                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors p-1"
+                                        >
+                                            <RxCross2  size={14} />
+                                        </button>
+                                    )}
                                 </div>
                                 {errors.mobile_number && <p className="text-[11px] text-red-600 font-medium mt-1 animate-in slide-in-from-top-1">{errors.mobile_number}</p>}
                             </div>
@@ -305,14 +351,23 @@ export default function RegisterPage() {
                                         value={formData.state}
                                         onChange={handleInputChange}
                                         onBlur={handleBlur}
-                                        onKeyDown={(e) => {
-                                            if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                                e.preventDefault();
-                                            }
-                                        }}
+                                        // onKeyDown={(e) => {
+                                        //     if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Delete" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                                        //         e.preventDefault();
+                                        //     }
+                                        // }}
                                         placeholder="e.g. Maharashtra"
-                                        className={`w-full pl-10 pr-4 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.state ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
+                                        className={`w-full pl-10 pr-10 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.state ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
                                     />
+                                    {formData.state && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData(prev => ({ ...prev, state: "" }))}
+                                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors p-1"
+                                        >
+                                            <RxCross2  size={14} />
+                                        </button>
+                                    )}
                                 </div>
                                 {errors.state && <p className="text-[11px] text-red-600 font-medium mt-1 animate-in slide-in-from-top-1">{errors.state}</p>}
                             </div>
@@ -332,7 +387,7 @@ export default function RegisterPage() {
                                         onChange={handleInputChange}
                                         onBlur={handleBlur}
                                         placeholder="••••••••"
-                                        className={`w-full pl-10 pr-12 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.password ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
+                                        className={`w-full pl-10 pr-10 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.password ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
                                     />
                                     <button
                                         type="button"
@@ -357,7 +412,7 @@ export default function RegisterPage() {
                                         onChange={handleInputChange}
                                         onBlur={handleBlur}
                                         placeholder="••••••••"
-                                        className={`w-full pl-10 pr-12 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.password_confirmation ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
+                                        className={`w-full pl-10 pr-10 py-3 border outline-none transition-all duration-300 rounded-sm text-sm ${errors.password_confirmation ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"} text-gray-800`}
                                     />
                                     <button
                                         type="button"
@@ -392,8 +447,8 @@ export default function RegisterPage() {
 
                     <div className="mt-8 pt-6 border-t border-gray-100 text-center">
                         <p className="text-[13px] text-gray-500 mb-4">Already have an account?</p>
-                        <Link href="/login" className="text-[#7A1F3D] font-bold uppercase tracking-[0.2em] text-xs hover:underline inline-block border border-[#7A1F3D]/20 px-6 py-2 hover:bg-[#7A1F3D]/5 transition-colors">
-                            Sign In Instead
+                        <Link href="/login" className="text-[#7A1F3D] font-bold uppercase tracking-[0.2em] text-xs  inline-block border border-[#7A1F3D]/20 px-6 py-2 hover:bg-[#7A1F3D]/5 transition-colors">
+                            Sign In
                         </Link>
                     </div>
 

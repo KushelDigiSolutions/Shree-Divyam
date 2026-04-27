@@ -14,6 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import DirectAddToCart from "./DirectAddToCart";
 
+
 export default function LatestCollection() {
   const router = useRouter();
   const [latestProducts, setLatestProducts] = useState([]);
@@ -21,7 +22,7 @@ export default function LatestCollection() {
   const { formatPrice } = useCurrency();
 
   const IMAGE_BASE_URL = "https://shreedivyam.kdscrm.com/uploads/";
-
+  const firstProduct = latestProducts?.[0];
   useEffect(() => {
     const fetchLatestProducts = async () => {
       try {
@@ -50,10 +51,14 @@ export default function LatestCollection() {
           {/* LEFT BANNER */}
           <div className="relative w-full lg:w-[584px] h-[300px] sm:h-[400px] lg:h-[600px] overflow-hidden group bg-white lg:bg-transparent ring-1 ring-gray-200 lg:ring-0">
             <img
-              src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856926/krishna-image.png"
-              alt="Banner"
-              className="w-full h-full object-contain lg:object-cover lg:p-0 transition-transform duration-700 group-hover:scale-105"
-            />
+    src={
+      firstProduct?.image_path?.startsWith("http")
+        ? firstProduct.image_path
+        : `${IMAGE_BASE_URL}${firstProduct?.image_path}`
+    }
+    alt={firstProduct?.name || "Banner"}
+    className="w-full h-full object-contain lg:object-cover lg:p-0 transition-transform duration-700 group-hover:scale-105"
+  />
 
             {/* Overlay */}
             <div className="absolute inset-0 bg-black/40"></div>
@@ -64,9 +69,17 @@ export default function LatestCollection() {
                 Let Your Love <br className="hidden sm:block" /> Tick Forever
               </h3>
 
-              <button className="flex items-center gap-2 bg-white text-black px-5 sm:px-6 py-2.5 sm:py-3 w-fit text-[14px] sm:text-[15px] font-medium hover:bg-gray-100 transition">
-                Shop Now <ArrowRight size={18} />
-              </button>
+              {firstProduct ? (
+                <Link href={`/product-details/${firstProduct.slug}`}>
+                  <button className="flex items-center gap-2 bg-white text-black px-5 sm:px-6 py-2.5 sm:py-3 w-fit text-[14px] sm:text-[15px] font-medium hover:bg-gray-100 transition cursor-pointer">
+                    Shop Now <ArrowRight size={18} />
+                  </button>
+                </Link>
+              ) : (
+                <button className="flex items-center gap-2 bg-white text-black px-5 sm:px-6 py-2.5 sm:py-3 w-fit text-[14px] sm:text-[15px] font-medium hover:bg-gray-100 transition opacity-80">
+                  Shop Now <ArrowRight size={18} />
+                </button>
+              )}
             </div>
           </div>
 

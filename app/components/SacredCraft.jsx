@@ -32,13 +32,15 @@ export default function SacredCraft() {
       <div className="mx-auto max-w-[1440px] px-6 sm:px-10 md:px-16 lg:px-24">
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
           {/* Left Image */}
-          <div className="relative mx-auto w-full max-w-[546px] lg:flex-1">
-            <div className="overflow-hidden rounded-[16px] sm:rounded-[22px]">
+          <div className="relative mx-auto w-full max-w-[546px] lg:flex-1 group">
+            <div className="overflow-hidden rounded-[16px] sm:rounded-[22px] relative">
               <img
                 src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774942493/Our%20Sacred%20Craft%20A%20Legacy%20of%20Devotion.png"
                 alt="Artisan crafting dress"
-                className="w-full h-full aspect-square object-cover"
+                className="w-full h-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105"
               />
+              {/* Full-coverage hover overlay */}
+              <div className="absolute inset-0 bg-[#7A1F3D]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
             </div>
 
             <div className="absolute bottom-[-10px] right-2 sm:bottom-[-14px] sm:right-4 md:right-5 lg:bottom-[-12px] lg:right-[-14px]">

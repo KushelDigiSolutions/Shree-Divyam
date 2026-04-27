@@ -292,7 +292,7 @@ export default function MyAddressesPage() {
                                         <label className="text-[11px] uppercase tracking-widest font-bold text-gray-400">First Name</label>
                                         <div className="relative">
                                             <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
-                                            <input type="text" name="first_name" value={formData.first_name} onChange={handleInputChange} onBlur={handleBlur} onKeyDown={(e) => { if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") e.preventDefault(); }} placeholder="First Name" className={`w-full pl-10 pr-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.first_name ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
+                                            <input type="text" name="first_name" value={formData.first_name} onChange={handleInputChange} onBlur={handleBlur} placeholder="First Name" className={`w-full pl-10 pr-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.first_name ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
                                         </div>
                                         {errors.first_name && <p className="text-[10px] text-red-500 mt-1 font-medium">{errors.first_name}</p>}
                                     </div>
@@ -300,7 +300,7 @@ export default function MyAddressesPage() {
                                         <label className="text-[11px] uppercase tracking-widest font-bold text-gray-400">Last Name</label>
                                         <div className="relative">
                                             <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
-                                            <input type="text" name="last_name" value={formData.last_name} onChange={handleInputChange} onBlur={handleBlur} onKeyDown={(e) => { if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") e.preventDefault(); }} placeholder="Last Name" className={`w-full pl-10 pr-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.last_name ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
+                                            <input type="text" name="last_name" value={formData.last_name} onChange={handleInputChange} onBlur={handleBlur} placeholder="Last Name" className={`w-full pl-10 pr-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.last_name ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
                                         </div>
                                         {errors.last_name && <p className="text-[10px] text-red-500 mt-1 font-medium">{errors.last_name}</p>}
                                     </div>
@@ -345,12 +345,12 @@ export default function MyAddressesPage() {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label className="text-[11px] uppercase tracking-widest font-bold text-gray-400">City</label>
-                                        <input type="text" name="city" value={formData.city} onChange={handleInputChange} onBlur={handleBlur} onKeyDown={(e) => { if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") e.preventDefault(); }} placeholder="City" className={`w-full px-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.city ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
+                                        <input type="text" name="city" value={formData.city} onChange={handleInputChange} onBlur={handleBlur} placeholder="City" className={`w-full px-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.city ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
                                         {errors.city && <p className="text-[10px] text-red-500 mt-1 font-medium">{errors.city}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[11px] uppercase tracking-widest font-bold text-gray-400">State</label>
-                                        <input type="text" name="state" value={formData.state} onChange={handleInputChange} onBlur={handleBlur} onKeyDown={(e) => { if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") e.preventDefault(); }} placeholder="State" className={`w-full px-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.state ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
+                                        <input type="text" name="state" value={formData.state} onChange={handleInputChange} onBlur={handleBlur} placeholder="State" className={`w-full px-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.state ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
                                         {errors.state && <p className="text-[10px] text-red-500 mt-1 font-medium">{errors.state}</p>}
                                     </div>
                                 </div>
@@ -358,14 +358,14 @@ export default function MyAddressesPage() {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label className="text-[11px] uppercase tracking-widest font-bold text-gray-400">Zipcode</label>
-                                        <input type="text" name="zipcode" maxLength={6} value={formData.zipcode} onChange={handleInputChange} onBlur={handleBlur} onKeyDown={(e) => { if (!/^[0-9]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") e.preventDefault(); }} placeholder="Zipcode (6 digits)" className={`w-full px-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.zipcode ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
+                                        <input type="text" name="zipcode" maxLength={6} value={formData.zipcode} onChange={handleInputChange} onBlur={handleBlur} placeholder="Zipcode (6 digits)" className={`w-full px-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.zipcode ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
                                         {errors.zipcode && <p className="text-[10px] text-red-500 mt-1 font-medium">{errors.zipcode}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[11px] uppercase tracking-widest font-bold text-gray-400">Contact Number</label>
                                         <div className="relative">
                                             <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
-                                            <input type="tel" name="phone" maxLength={10} value={formData.phone} onChange={handleInputChange} onBlur={handleBlur} onKeyDown={(e) => { if (!/^[0-9]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") e.preventDefault(); }} placeholder="10-digit Phone Number (e.g. 9876543210)" className={`w-full pl-10 pr-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.phone ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
+                                            <input type="tel" name="phone" maxLength={10} value={formData.phone} onChange={handleInputChange} onBlur={handleBlur} placeholder="10-digit Phone Number (e.g. 9876543210)" className={`w-full pl-10 pr-4 py-3 border rounded-sm text-sm outline-none transition-all ${errors.phone ? "border-red-300 bg-red-50/20" : "border-gray-200 focus:border-[#7A1F3D]"}`} />
                                         </div>
                                         {errors.phone && <p className="text-[10px] text-red-500 mt-1 font-medium">{errors.phone}</p>}
                                     </div>

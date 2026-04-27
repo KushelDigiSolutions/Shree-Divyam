@@ -8,7 +8,7 @@ export default function Hero() {
 
       {/* Background Image Layer (Feather Watermark) */}
       <div
-        className="hidden md:block absolute right-0 top-0 bottom-0 w-[400px] lg:w-[522px] bg-contain bg-no-repeat bg-right-bottom z-0 opacity-80 pointer-events-none"
+        className="hidden md:block absolute right-0 top-0 bottom-0 w-[450px] lg:w-[600px] bg-contain bg-no-repeat bg-right z-0 opacity-80 pointer-events-none"
         style={{ backgroundImage: 'url("https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856924/Where%20Devotion%20Meets%20Royal%20Elegance.png")' }}
       />
 
@@ -56,11 +56,11 @@ export default function Hero() {
       {/* Decorative Side Borders */}
       <div
         className="hidden xl:block absolute left-0 top-0 bottom-0 w-[30px] lg:w-[40px] opacity-90 pointer-events-none bg-repeat-y bg-contain"
-        style={{ backgroundImage: 'url("https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856924/Group_10105_vzdpol.png")' }}
+        style={{ backgroundImage: 'url("https://res.cloudinary.com/dlzxiy0tl/image/upload/v1777273068/Exquisite%20Dresses%20for%20Laddu%20Gopal%2C.png")' }}
       />
       <div
-        className="hidden xl:block absolute right-0 top-0 bottom-0 w-[30px] lg:w-[40px] opacity-90 pointer-events-none bg-repeat-y bg-contain scale-x-[-1]"
-        style={{ backgroundImage: 'url("https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856924/Group_10105_vzdpol.png")' }}
+        className="hidden xl:block absolute right-0 top-0 bottom-0 w-[30px] lg:w-[40px] opacity-90 pointer-events-none bg-repeat-y bg-contain"
+        style={{ backgroundImage: 'url("https://res.cloudinary.com/dlzxiy0tl/image/upload/v1777273067/Exquisite%20Dresses%20for%20laddu.png")' }}
       />
 
 

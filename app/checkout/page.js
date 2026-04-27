@@ -742,11 +742,11 @@ export default function CheckoutPage() {
                                                             value={formData.first_name}
                                                             onChange={handleInputChange}
                                                             onBlur={handleBlur}
-                                                            onKeyDown={(e) => {
-                                                                if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                                                    e.preventDefault();
-                                                                }
-                                                            }}
+                                                            // onKeyDown={(e) => {
+                                                            //     if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                                                            //         e.preventDefault();
+                                                            //     }
+                                                            // }}
                                                             placeholder="First Name"
                                                             className={`w-full pl-10 pr-4 py-3 border outline-none transition-all rounded-sm text-sm ${errors.first_name ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"}`}
                                                         />
@@ -761,11 +761,11 @@ export default function CheckoutPage() {
                                                         value={formData.last_name}
                                                         onChange={handleInputChange}
                                                         onBlur={handleBlur}
-                                                        onKeyDown={(e) => {
-                                                            if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                                                e.preventDefault();
-                                                            }
-                                                        }}
+                                                        // onKeyDown={(e) => {
+                                                        //     if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                                                        //         e.preventDefault();
+                                                        //     }
+                                                        // }}
                                                         placeholder="Last Name"
                                                         className={`w-full px-4 py-3 border outline-none transition-all rounded-sm text-sm ${errors.last_name ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"}`}
                                                     />
@@ -845,11 +845,11 @@ export default function CheckoutPage() {
                                                         value={formData.city}
                                                         onChange={handleInputChange}
                                                         onBlur={handleBlur}
-                                                        onKeyDown={(e) => {
-                                                            if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                                                e.preventDefault();
-                                                            }
-                                                        }}
+                                                        // onKeyDown={(e) => {
+                                                        //     if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                                                        //         e.preventDefault();
+                                                        //     }
+                                                        // }}
                                                         placeholder="City"
                                                         className={`w-full px-4 py-3 border outline-none transition-all rounded-sm text-sm ${errors.city ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"}`}
                                                     />
@@ -866,11 +866,11 @@ export default function CheckoutPage() {
                                                         value={formData.state}
                                                         onChange={handleInputChange}
                                                         onBlur={handleBlur}
-                                                        onKeyDown={(e) => {
-                                                            if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                                                e.preventDefault();
-                                                            }
-                                                        }}
+                                                        // onKeyDown={(e) => {
+                                                        //     if (!/^[A-Za-z\s]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                                                        //         e.preventDefault();
+                                                        //     }
+                                                        // }}
                                                         placeholder="State"
                                                         className={`w-full px-4 py-3 border outline-none transition-all rounded-sm text-sm ${errors.state ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"}`}
                                                     />
@@ -885,11 +885,11 @@ export default function CheckoutPage() {
                                                         onChange={handleInputChange}
                                                         onBlur={handleBlur}
                                                         maxLength={6}
-                                                        onKeyDown={(e) => {
-                                                            if (!/^[0-9]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                                                e.preventDefault();
-                                                            }
-                                                        }}
+                                                        // onKeyDown={(e) => {
+                                                        //     if (!/^[0-9]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                                                        //         e.preventDefault();
+                                                        //     }
+                                                        // }}
                                                         placeholder="Zipcode (6 digits)"
                                                         className={`w-full px-4 py-3 border outline-none transition-all rounded-sm text-sm ${errors.zipcode ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"}`}
                                                     />
@@ -908,11 +908,11 @@ export default function CheckoutPage() {
                                                         onChange={handleInputChange}
                                                         onBlur={handleBlur}
                                                         maxLength={10}
-                                                        onKeyDown={(e) => {
-                                                            if (!/^[0-9]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
-                                                                e.preventDefault();
-                                                            }
-                                                        }}
+                                                        // onKeyDown={(e) => {
+                                                        //     if (!/^[0-9]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                                                        //         e.preventDefault();
+                                                        //     }
+                                                        // }}
                                                         placeholder="10-digit Phone Number (e.g. 9876543210)"
                                                         className={`w-full pl-10 pr-4 py-3 border outline-none transition-all rounded-sm text-sm ${errors.phone ? "border-red-300 bg-red-50/20 focus:border-red-500" : "border-gray-200 focus:border-[#7A1F3D]"}`}
                                                     />

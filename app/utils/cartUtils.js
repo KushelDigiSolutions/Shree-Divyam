@@ -374,48 +374,45 @@ export const addToCart = async (product, quantity = 1, forcedVariantId = null) =
 /**
  * Gets the specific quantity and variantId of a product in the cart locally.
  */
-export const getCartItemQuantity = (product) => {
+export const getCartItemQuantity = (product, targetVariantId = null) => {
     try {
         const stored = localStorage.getItem(CART_QUANTITIES_KEY);
         if (!stored) return { quantity: 0, variantId: null };
         const quantities = JSON.parse(stored);
         
-        // Get the product ID - if missing/0, we cannot reliably match, return 0
         const serverId = product.id || product.product_id || product.productID;
         if (!serverId || String(serverId) === '0') return { quantity: 0, variantId: null };
         
         const localKeyId = String(serverId);
         
-        // Step 1: Try exact key match using known variant IDs on this product
-        const knownVariantIds = [];
-        const variations = product.variations || product.variants || [];
-        if (Array.isArray(variations)) {
-            variations.forEach(v => { if (v && v.id) knownVariantIds.push(String(v.id)); });
+        // If we have a specific target, check it first
+        if (targetVariantId !== null && targetVariantId !== undefined) {
+            let vId = String(targetVariantId);
+            if (vId === "null" || vId === "undefined") vId = "";
+            const key = `${localKeyId}_${vId}`;
+            if (quantities[key] !== undefined) {
+                return { quantity: Number(quantities[key]), variantId: vId || null };
+            }
         }
-        
-        // Step 2: Scan localStorage keys - ONLY match keys that belong EXACTLY to this product ID
+
+        // Fallback: Scan for any variant of this product
         let foundQty = 0;
         let foundVariant = null;
         
         Object.entries(quantities).forEach(([key, val]) => {
             if (Number(val) <= 0) return;
-            
-            // Key format: "productId_variantId"
             const underscoreIdx = key.indexOf('_');
-            if (underscoreIdx === -1) return; // malformed key
+            if (underscoreIdx === -1) return;
             
             const keyProductId = key.substring(0, underscoreIdx);
             const keyVariantId = key.substring(underscoreIdx + 1);
             
-            // STRICT: product ID must match exactly
-            if (keyProductId !== localKeyId) return;
-            
-            // This key belongs to our product. Take the highest quantity found.
-            if (Number(val) > foundQty) {
-                foundQty = Number(val);
-                foundVariant = keyVariantId || null;
-                if (foundVariant === "null" || foundVariant === "undefined" || foundVariant === "") {
-                    foundVariant = null;
+            if (keyProductId === localKeyId) {
+                // If we didn't have a target, or it wasn't found, pick the first one we see
+                if (!foundVariant) {
+                    foundQty = Number(val);
+                    foundVariant = keyVariantId || null;
+                    if (foundVariant === "null" || foundVariant === "undefined" || foundVariant === "") foundVariant = null;
                 }
             }
         });

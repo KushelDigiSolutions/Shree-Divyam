@@ -12,6 +12,7 @@ export default function Header() {
   const [isMounted, setIsMounted] = useState(false);
   const { user, logout, isLoggedIn } = useAuth();
   const [cartCount, setCartCount] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const syncQuantitiesFromServer = async () => {
     if (!isLoggedIn) return;
@@ -135,6 +136,13 @@ export default function Header() {
     );
   }
 
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full">
 
@@ -149,18 +157,31 @@ export default function Header() {
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end flex-wrap items-start sm:items-center gap-4 md:gap-6 text-[16px] md:text-[18px] w-full md:w-auto">
-            <div className="relative w-[180px] sm:w-48 md:w-64">
+            <form onSubmit={handleSearch} className="relative w-[180px] sm:w-48 md:w-64">
               <input
                 type="text"
                 placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 suppressHydrationWarning
-                className="w-full rounded-[0.30rem] border border-gray-300 bg-white px-4 pr-11 py-2 text-xs sm:text-sm text-gray-800 shadow-sm outline-none transition duration-150 focus:border-[#7A1F3D] focus:ring-2 focus:ring-[#7A1F3D]/20"
+                className="w-full rounded-[0.30rem] border border-gray-300 bg-white px-4 pr-10 py-2 text-xs sm:text-sm text-gray-800 shadow-sm outline-none transition duration-150 focus:border-[#7A1F3D] focus:ring-2 focus:ring-[#7A1F3D]/20"
               />
-              <Search
-                size={18}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7A1F3D] z-10 md:w-[22px]"
-              />
-            </div>
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-8 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors p-1 z-20"
+                >
+                  <X size={14} />
+                </button>
+              )}
+              <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7A1F3D] z-10">
+                <Search
+                  size={18}
+                  className="md:w-[22px]"
+                />
+              </button>
+            </form>
             <div className="flex items-center gap-4 text-[14px] sm:text-[15px] md:text-[18px] sm:gap-4 md:gap-4 w-auto sm:w-auto justify-start sm:justify-end">
               {!isLoggedIn ? (
                 <Link href="/login" className="flex items-center gap-1.5 md:gap-2 cursor-pointer hover:text-white transition-colors">

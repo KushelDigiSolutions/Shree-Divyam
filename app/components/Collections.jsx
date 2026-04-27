@@ -121,12 +121,10 @@ export default function Collections() {
                   key={item.id || index}
                   className="w-full sm:w-auto lg:w-[380px] h-auto overflow-hidden shrink-0 group relative flex flex-col bg-white/40 hover:bg-white/60 transition-colors duration-300 rounded-sm shadow-sm mx-auto"
                 >
-                  <div className="aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/5] lg:h-[480px] w-full overflow-hidden bg-white/20">
-                    <img
-                      src={imageUrl}
-                      alt={item.name}
-                      className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-                    />
+                  <div className="aspect-[4/5] sm:aspect-[3/4] md:aspect-[4/5] lg:h-[480px] w-full overflow-hidden bg-white/20 relative">
+                    <img src={imageUrl} alt={item.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    {/* Full-coverage hover overlay */}
+                    <div className="absolute inset-0 bg-[#7A1F3D]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
                   </div>
                   <div className="p-4 sm:p-5 flex-1 flex flex-col">
                     <h3 className="text-[16px] sm:text-[18px] md:text-[21px] font-medium text-[#303030] font-gt-walsheim mb-0.5 sm:mb-2 line-clamp-1 group-hover:text-[#7A1F3D] transition-colors">

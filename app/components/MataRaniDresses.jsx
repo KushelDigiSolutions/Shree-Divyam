@@ -96,11 +96,11 @@ export default function MataRaniDresses() {
                 <SwiperSlide key={product.id}>
                   <div className="overflow-hidden bg-white ring-1 ring-[#EFEAE4] h-full lg:h-[540px] flex flex-col cursor-pointer group rounded-sm shadow-sm">
                     <div className="p-[8px] sm:p-[10px] pb-0">
-                      <div className="aspect-[1/1] w-full h-auto max-h-[280px] overflow-hidden bg-[#F3F3F3]">
+                      <div className="aspect-[1/1] w-full h-auto max-h-[280px] overflow-hidden bg-white">
                         <img
                           src={product.image_path?.startsWith('http') ? product.image_path : `${IMAGE_BASE_URL}${product.image_path}`}
                           alt={product.name}
-                          className="h-full w-full object-contain p-2 transition-transform duration-700 group-hover:scale-105"
+                          className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
                           onError={(e) => {
                             e.target.onerror = null;
                             const fallbackProduct = staticProducts.find((p) => p.title.toLowerCase() === product.name.toLowerCase() || p.slug === product.slug);
@@ -143,9 +143,13 @@ export default function MataRaniDresses() {
           {/* Promo card */}
           <div className="relative min-h-[300px] w-full lg:w-[300px] xl:w-[404px] h-[300px] sm:h-[400px] lg:h-[540px] overflow-hidden bg-white lg:bg-transparent ring-1 ring-[#EFEAE4] rounded-sm shadow-sm">
             <img
-              src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856926/krishna-image.png"
+              src={products?.[0]?.image_path ? (products[0].image_path.startsWith('http') ? products[0].image_path : `${IMAGE_BASE_URL}${products[0].image_path}`) : "https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856926/krishna-image.png"}
               alt="Premium dress collection"
-              className="h-full w-full object-contain lg:object-cover lg:p-0"
+              className="h-full w-full object-cover lg:p-0"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856926/krishna-image.png";
+              }}
             />
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/10" />
