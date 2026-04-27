@@ -161,7 +161,7 @@ export default function Header() {
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7A1F3D] z-10 md:w-[22px]"
               />
             </div>
-            <div className="flex flex-wrap items-center gap-4 sm:gap-4 md:gap-4 text-[14px] sm:text-[15px] md:text-[18px] w-full sm:w-auto justify-between sm:justify-end">
+            <div className="flex items-center gap-4 text-[14px] sm:text-[15px] md:text-[18px] sm:gap-4 md:gap-4 w-auto sm:w-auto justify-start sm:justify-end">
               {!isLoggedIn ? (
                 <Link href="/login" className="flex items-center gap-1.5 md:gap-2 cursor-pointer hover:text-white transition-colors">
                   <img src="https://res.cloudinary.com/dlzxiy0tl/image/upload/v1774856036/Mask_group_3_mw7ria.png" alt="account" className="h-4 md:h-5 w-auto" />
