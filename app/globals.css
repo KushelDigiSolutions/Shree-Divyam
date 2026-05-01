@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-gt-walsheim {
+  font-family: 'GT Walsheim Trial', 'Poppins', sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* PromoSection Swiper Custom Styles */
+.promo-swiper-container .swiper-pagination {
+  bottom: 20px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.promo-swiper-container .swiper-pagination-bullet {
+  margin: 0 !important;
+  width: 10px !important;
+  height: 10px !important;
+  background-color: transparent !important;
+  border: 1px solid white !important;
+  opacity: 1 !important;
+  transition: all 0.3s ease;
+}
+.promo-swiper-container .swiper-pagination-bullet-active {
+  background-color: white !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  width: 14px !important;
+  height: 14px !important;
+}
